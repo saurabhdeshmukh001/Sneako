@@ -105,7 +105,7 @@ function Login() {
 
             {/* Password */}
             <div>
-              <label className="block mb-2 font-medium">Password</label>
+              <label className="block mb-2 font-medium">PASSWORD</label>
               <input
                 type="password"
                 value={password}
