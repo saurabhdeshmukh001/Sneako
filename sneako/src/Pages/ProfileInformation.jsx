@@ -15,14 +15,16 @@ function ProfileInformation() {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
+    const parsedUser = JSON.parse(storedUser);
     if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
+      //const parsedUser = JSON.parse(storedUser);
       setUser(parsedUser);
       axios
         .get("http://localhost:3000/api/v1/users")
         .then((res) => {
           const users = res.data;
           const userData = users.find((u) => u.id === parsedUser.id);
+          console.log("Fetched user data:", userData);
           if (userData) {
             setFormData({
               name: userData.name,
@@ -47,38 +49,46 @@ function ProfileInformation() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setMessage("");
+  e.preventDefault();
+  setError("");
+  setMessage("");
 
-    if (!user) {
-      setError("User not logged in.");
-      return;
-    }
+  if (!user) {
+    setError("User not logged in.");
+    return;
+  }
 
-    try {
-      const updatedData = {
-        name: formData.name,
-        phone: formData.phone,
-        email: formData.email,
-        password: formData.password || user.password,
-      };
+  try {
+    const updatedData = {
+      id: user.id, // include user id in request body
+      name: formData.name,
+      phone: formData.phone,
+      email: formData.email,
+      password: formData.password || user.password,
+    };
 
-      const response = await axios.put(
-        `http://localhost:3000/api/v1/users/${user.id}`,
-        updatedData
-      );
-      const updatedUser = response.data;
+    const response = await axios.put(
+      `http://localhost:3000/api/v1/users/${user.id}`, // use id from localStorage
+      updatedData
+    );
 
-      localStorage.setItem("user", JSON.stringify(updatedUser));
-      setUser(updatedUser);
-      setMessage("Profile updated successfully!");
-      setIsEditing(false);
-    } catch (err) {
-      console.error("Error updating profile:", err);
-      setError("Failed to update profile. Please try again.");
-    }
-  };
+    console.log(response);
+
+    // keep local id always
+    const updatedUser = {
+      ...response.data,
+      id: user.id,
+    };
+
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    setUser(updatedUser);
+    setMessage("Profile updated successfully!");
+    setIsEditing(false);
+  } catch (err) {
+    console.error("Error updating profile:", err);
+    setError("Failed to update profile. Please try again.");
+  }
+};
 
   const handleCancel = () => {
     setIsEditing(false);
