@@ -209,6 +209,7 @@ server.get(`${API_PREFIX}/users`, (req, res) => {
 });
 
 server.put(`${API_PREFIX}/users/:id`, (req, res) => {
+  console.log("req.body ", req.body);
   const id = req.params.id;
   const updatedUser = req.body;
   const usersData = dbMap.users.get('users');
