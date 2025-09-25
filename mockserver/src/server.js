@@ -49,7 +49,7 @@ const apiHandlers = {
   'auth/login': (req, res) => {
     const { name, password } = req.body;
     console.log("name and password ", name, password);
-    if (!name || !password || name.length <= 3 || password.length <= 6) {
+    if (!name || !password) {
       return res.status(400).jsonp(loginResponses.badRequest);
     }
     const users = dbMap.users.get('users').value() || [];
@@ -209,16 +209,34 @@ server.get(`${API_PREFIX}/users`, (req, res) => {
 });
 
 server.put(`${API_PREFIX}/users/:id`, (req, res) => {
-  console.log("req.body ", req.body);
-  const id = req.params.id;
-  const updatedUser = req.body;
-  const usersData = dbMap.users.get('users');
-  const index = usersData.findIndex(item => String(item.id) === String(id)).value();
-  if (index === -1) {
-    return res.status(404).jsonp({ message: 'User not found.' });
-  }
-  usersData.splice(index, 1, { ...updatedUser, id }).write();
-  res.jsonp({ ...updatedUser, id });
+ console.log("req.body ", req.body);
+const id = req.params.id;
+const updatedUser = req.body;
+
+// Get users array
+const usersData = dbMap.users.get('users');
+
+// Find user index
+const index = usersData.findIndex(item => String(item.id) === String(id)).value();
+if (index === -1) {
+  return res.status(404).jsonp({ message: 'User not found.' });
+}
+
+// Get existing user
+const existingUser = usersData.get(index).value();
+
+// Merge only updated fields, keep address and role intact
+const newUserData = {
+  ...existingUser,   // preserve all existing fields
+  ...updatedUser,    // overwrite only fields sent in req.body
+  id                 // ensure id stays the same
+};
+
+// Replace user in array
+usersData.splice(index, 1, newUserData).write();
+
+// Return updated user
+res.jsonp(newUserData);
 });
 
 server.get(`${API_PREFIX}/orders`, (req, res) => {

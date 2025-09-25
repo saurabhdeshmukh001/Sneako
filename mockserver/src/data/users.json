@@ -19,9 +19,11 @@
     {
       "id": "3",
       "name": "harsh",
-      "phone": "12345",
-      "email": "harsh@gmail.com",
-      "password": "1234"
+      "phone": "28634",
+      "email": "h@gmail.com",
+      "password": "123456",
+      "address": "xyz",
+      "role": "customer"
     }
   ]
 }
