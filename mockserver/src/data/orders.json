@@ -1,0 +1,79 @@
+{"orders": [
+    {
+      "id": "366f",
+      "userId": "1",
+      "products": [
+        {
+          "productId": "10",
+          "name": "Converse All Star",
+          "price": 3500,
+          "quantity": 1,
+          "size": "N/A"
+        }
+      ],
+      "totalPrice": 3750,
+      "shippingAddress": "Kailash pg",
+      "paymentMethod": "UPI",
+      "status": "Processing",
+      "orderDate": "2025-09-23T15:27:29.125Z",
+      "trackingNumber": "TRACK-776642"
+    },
+    {
+      "id": "5419",
+      "userId": "1",
+      "products": [
+        {
+          "productId": "7",
+          "name": "Air Jordan 1",
+          "price": 9999,
+          "quantity": 5,
+          "size": 10
+        }
+      ],
+      "totalPrice": 49995,
+      "shippingAddress": "kakis",
+      "paymentMethod": "Credit/Debit Card",
+      "status": "Processing",
+      "orderDate": "2025-09-23T15:48:04.361Z",
+      "trackingNumber": "TRACK-670927"
+    },
+    {
+      "id": "1756",
+      "userId": "1",
+      "products": [
+        {
+          "productId": "18",
+          "name": "Nike Cortez",
+          "price": 7800,
+          "quantity": 1,
+          "size": 9
+        }
+      ],
+      "totalPrice": 7800,
+      "shippingAddress": "Pune",
+      "paymentMethod": "Credit/Debit Card",
+      "status": "Processing",
+      "orderDate": "2025-09-25T06:24:57.109Z",
+      "trackingNumber": "TRACK-706385"
+    },
+    {
+      "id": "5c46",
+      "userId": "1",
+      "products": [
+        {
+          "productId": "12",
+          "name": "Puma Suede Classic",
+          "price": 6500,
+          "quantity": 1,
+          "size": 9
+        }
+      ],
+      "totalPrice": 6500,
+      "shippingAddress": "hjhja",
+      "paymentMethod": "Cash on Delivery",
+      "status": "Processing",
+      "orderDate": "2025-09-25T08:46:33.302Z",
+      "trackingNumber": "TRACK-485905"
+    }
+  ]
+}

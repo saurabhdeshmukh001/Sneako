@@ -1,0 +1,121 @@
+{
+  "products": [
+    {
+      "id": "10",
+      "name": "Converse All Star",
+      "price": 3500,
+      "description": "Classic canvas high-top sneakers for casual wear.",
+      "image": "https://images.unsplash.com/photo-1565379793984-e65b51b33b37?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Casual Shoe",
+      "stock": 18
+    },
+    {
+      "id": "11",
+      "name": "Nike Air Force 1",
+      "price": 8999,
+      "description": "Timeless style and comfort in a low-cut design.",
+      "image": "https://images.unsplash.com/photo-1643535170091-319c6fe2e191?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Casual Shoes",
+      "stock": 20
+    },
+    {
+      "id": "12",
+      "name": "Puma Suede Classic",
+      "price": 6500,
+      "description": "Iconic suede sneakers with a retro feel.",
+      "image": "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Casual Shoes",
+      "stock": 20
+    },
+    {
+      "id": "13",
+      "name": "New Balance 990v5",
+      "price": 18500,
+      "description": "Premium running shoes with superior support and durability.",
+      "image": "https://images.unsplash.com/photo-1738951878578-48bed24cc718?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Running Shoes",
+      "stock": 20
+    },
+    {
+      "id": "14",
+      "name": "Vans Old Skool",
+      "price": 4800,
+      "description": "Classic skate sneakers with a side stripe design.",
+      "image": "https://images.unsplash.com/photo-1670181830393-41ebf6c576a2?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Skate Shoes",
+      "stock": 20
+    },
+    {
+      "id": "16",
+      "name": "Adidas Stan Smith",
+      "price": 7200,
+      "description": "Clean, classic tennis shoe silhouette.",
+      "image": "https://images.unsplash.com/photo-1505248254168-1de4e1abfa78?q=80&w=1469&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Casual Shoes",
+      "stock": 20
+    },
+    {
+      "id": "17",
+      "name": "Reebok Club C 85",
+      "price": 6800,
+      "description": "Vintage tennis style with modern comfort.",
+      "image": "https://images.unsplash.com/photo-1695459590088-d6fd3cc97cfa?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Casual Shoes",
+      "stock": 20
+    },
+    {
+      "id": "18",
+      "name": "Nike Cortez",
+      "price": 7800,
+      "description": "The original Nike running shoe, a classic since 1972.",
+      "image": "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Running Shoes",
+      "stock": 20
+    },
+    {
+      "id": "19",
+      "name": "Asics Gel-Kayano",
+      "price": 14500,
+      "description": "Stability running shoe designed for long distances.",
+      "image": "https://images.unsplash.com/photo-1571741590149-a29f00898167?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Running Shoes",
+      "stock": 20
+    },
+    {
+      "id": "20",
+      "name": "Converse Chuck 70",
+      "price": 4200,
+      "description": "A refined, vintage version of the classic All Star.",
+      "image": "https://images.unsplash.com/photo-1680204101574-dea570724119?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Casual Shoes",
+      "stock": 20
+    },
+    {
+      "id": "21",
+      "name": "Vans Sk8-Hi",
+      "price": 5500,
+      "description": "High-top skate shoe with a durable canvas and suede upper.",
+      "image": "https://images.unsplash.com/photo-1620237468009-9bbd18f2de23?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Skate Shoes",
+      "stock": 20
+    },
+    {
+      "id": "22",
+      "name": "Jordan 4 Retro",
+      "price": 15999,
+      "description": "Classic silhouette with visible air cushioning and mesh panels. A street-wear favorite.",
+      "image": "https://images.unsplash.com/photo-1694729238828-028c0b74c579?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Basketball Shoes",
+      "stock": 18
+    },
+    {
+      "id": "23",
+      "name": "Adidas Samba OG",
+      "price": 6999,
+      "description": "Timeless indoor soccer shoe reborn as a lifestyle icon. Features a suede T-toe design.",
+      "image": "https://images.unsplash.com/photo-1695552835054-95b185af3d11?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "category": "Casual Shoes",
+      "stock": 25
+    }
+  ]
+}

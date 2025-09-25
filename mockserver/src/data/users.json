@@ -1,0 +1,31 @@
+{
+  "users": [
+    
+    {
+      "id": "2",
+      "email": "seller@example.com",
+      "name": "Seller",
+      "password": "seller123",
+      "role": "seller"
+    },
+    {
+      "id": "576e",
+      "name": "Saurabh",
+      "phone": "8530274378",
+      "email": "saurabh@gmail.com",
+      "password": "saurabh123",
+      "role": "customer",
+      "address": "hjhja"
+    },
+    
+    {
+      "id": "5",
+      "name": "harsh",
+      "phone": "9284672854",
+      "email": "harsh@gmail.com",
+      "password": "harsh123",
+      "address": "CBE CHIL - SEZ -FO,Special Economic Zone, Saravanampatti VIA, Coimbatore North Tal, Keeranatham Village",
+      "role": "customer"
+    }
+  ]
+}
