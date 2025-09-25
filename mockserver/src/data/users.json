@@ -1,6 +1,5 @@
 {
   "users": [
-    
     {
       "id": "2",
       "email": "seller@example.com",
@@ -17,15 +16,12 @@
       "role": "customer",
       "address": "hjhja"
     },
-    
     {
-      "id": "5",
+      "id": "3",
       "name": "harsh",
-      "phone": "9284672854",
+      "phone": "12345",
       "email": "harsh@gmail.com",
-      "password": "harsh123",
-      "address": "CBE CHIL - SEZ -FO,Special Economic Zone, Saravanampatti VIA, Coimbatore North Tal, Keeranatham Village",
-      "role": "customer"
+      "password": "1234"
     }
   ]
 }
