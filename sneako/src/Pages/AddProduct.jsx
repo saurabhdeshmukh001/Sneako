@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { addProduct } from "../api/api"; // Assuming this is your centralized API function
 import { FiX, FiArrowLeft, FiPlusSquare } from 'react-icons/fi'; // Icons for professional look
 
 function AddProduct() {
@@ -12,7 +11,8 @@ function AddProduct() {
         price: "",
         description: "",
         category: "Sport Shoes",
-        image: ""
+        image: "",
+        stock: "" // Added stock field
     });
     const [loading, setLoading] = useState(false); // FIX 1: Add loading state
     const [successMessage, setSuccessMessage] = useState("");
@@ -37,13 +37,24 @@ function AddProduct() {
         setErrorMessage("");
         
         try {
-            await addProduct({
-                ...product,
-                price: parseFloat(product.price)
+            // Direct API call to backend
+            const response = await fetch("http://localhost:3000/api/v1/products", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    ...product,
+                    price: parseFloat(product.price),
+                    stock: parseInt(product.stock)
+                })
             });
+            if (!response.ok) {
+                throw new Error("Failed to add product");
+            }
             setSuccessMessage("New product added successfully!");
             setTimeout(() => {
-                navigate("/product-management"); // FIX 3: Redirect to the correct page
+                navigate("/admin");
             }, 1500);
         } catch (error) {
             console.error("Error adding product:", error);
@@ -169,6 +180,18 @@ function AddProduct() {
                                     onChange={handleChange}
                                     className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                                     placeholder="e.g., https://images.unsplash.com/..."
+                                    required
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="block text-sm font-semibold text-gray-700 mb-2">Stock</label>
+                                <input
+                                    type="number"
+                                    name="stock"
+                                    value={product.stock}
+                                    onChange={handleChange}
+                                    className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                                     required
                                 />
                             </div>

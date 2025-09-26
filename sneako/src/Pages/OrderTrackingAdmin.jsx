@@ -21,18 +21,17 @@ function OrderTrackingAdmin() {
     // Function to fetch and merge order/user data (left unchanged as logic is good)
     useEffect(() => {
         const fetchOrdersAndUsers = async () => {
-            // ... (omitted fetch logic for brevity - it's fine as is)
             try {
-                const ordersResponse = await axios.get("http://localhost:5001/orders");
-                const usersResponse = await axios.get("http://localhost:5001/users");
+                const ordersResponse = await axios.get("http://localhost:3000/api/v1/orders");
+                const usersResponse = await axios.get("http://localhost:3000/api/v1/users");
                 
                 const ordersData = ordersResponse.data;
                 const usersData = usersResponse.data;
 
                 const ordersWithUsers = ordersData.map(order => {
-                    const user = usersData.find(u => u.id === order.userId);
+                    const user = usersData.find(u => String(u.id) === String(order.userId));
                     return { ...order, user };
-                }).sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate)); // Sort by date descending
+                }).sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
 
                 setOrders(ordersWithUsers);
                 setLoading(false);
@@ -47,7 +46,8 @@ function OrderTrackingAdmin() {
 
     const handleStatusChange = async (orderId, newStatus) => {
         try {
-            await axios.patch(`http://localhost:5001/orders/${orderId}`, { status: newStatus });
+            const orderToUpdate = orders.find(order => order.id === orderId);
+            await axios.put(`http://localhost:3000/api/v1/orders/${orderId}`, { ...orderToUpdate, status: newStatus });
             setOrders(
                 orders.map((order) =>
                     order.id === orderId ? { ...order, status: newStatus } : order
