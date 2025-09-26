@@ -64,10 +64,20 @@ function CheckoutPage() {
         setError('');
 
         try {
-            const userId = "1"; // Simulating a logged-in user
+            // Simulate logged-in user by getting user from localStorage
+            const user = JSON.parse(localStorage.getItem('user'));
+            const userId = user && user.id ? String(user.id) : null;
+            if (!userId) {
+                setError('User not logged in. Please log in to place an order.');
+                setLoading(false);
+                return;
+            }
 
-            // 1. Update user's address (optional, based on your backend)
-            await axios.patch(`http://localhost:5001/users/${userId}`, { address });
+            // 1. Update user's address (fetch user, merge address, then PUT)
+            const userRes = await axios.get(`http://localhost:3000/api/v1/users/${userId}`);
+            const existingUser = userRes.data;
+            const updatedUser = { ...existingUser, address };
+            await axios.put(`http://localhost:3000/api/v1/users/${userId}`, updatedUser);
 
             // 2. Create the new order object
             const newOrder = {
@@ -82,12 +92,12 @@ function CheckoutPage() {
             };
 
             // 3. Post the new order
-            const orderResponse = await axios.post("http://localhost:5001/orders", newOrder);
+            const orderResponse = await axios.post("http://localhost:3000/api/v1/orders", newOrder);
             const orderId = orderResponse.data.id;
 
             // 4. Clear the cart if the order was placed from the cart
             if (cartItems) {
-                await Promise.all(cartItems.map(item => axios.delete(`http://localhost:5001/cartItems/${item.id}`)));
+                await Promise.all(cartItems.map(item => axios.delete(`http://localhost:3000/api/v1/cart/${item.id}`)));
             }
 
             // 5. Navigate to confirmation page

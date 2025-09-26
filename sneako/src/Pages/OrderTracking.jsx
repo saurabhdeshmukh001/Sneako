@@ -48,7 +48,7 @@ function OrderTracking() {
         const fetchOrderAndProducts = async () => {
             try {
                 // 1. Fetch the Order details
-                const orderResponse = await axios.get(`http://localhost:5001/orders/${orderId}`);
+                const orderResponse = await axios.get(`http://localhost:3000/api/v1/orders/${orderId}`);
                 const fetchedOrder = orderResponse.data;
 
                 // 2. Extract unique product IDs
@@ -56,7 +56,7 @@ function OrderTracking() {
                 
                 // 3. Create an array of API calls to fetch product details (including images)
                 const productRequests = productIds.map(id => 
-                    axios.get(`http://localhost:5001/products/${id}`)
+                    axios.get(`http://localhost:3000/api/v1/products/${id}`)
                 );
 
                 // 4. Run all product requests simultaneously
