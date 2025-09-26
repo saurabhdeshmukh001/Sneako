@@ -17,12 +17,16 @@
       "address": "hjhja"
     },
     {
-      "id": "3",
+      "address": "dad",
+      "id": "3"
+    },
+    {
+      "id": "4",
       "name": "harsh",
-      "phone": "28634",
+      "phone": "972784283",
       "email": "h@gmail.com",
-      "password": "123456",
-      "address": "xyz",
+      "password": "12345",
+      "address": "kgx",
       "role": "customer"
     }
   ]
