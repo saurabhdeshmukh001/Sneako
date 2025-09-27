@@ -74,18 +74,18 @@ function Signup() {
       <Navbar></Navbar>
 
       {/* Signup Card */}
-      <div className="relative flex items-center justify-center h-screen z-10">
-        <div className="bg-black/40 backdrop-blur-md shadow-2xl rounded-2xl p-4 w-full max-w-md h-[500px] overflow-y-auto text-white">
-          <h2 className="text-3xl font-bold text-center mb-6">
+      <div className="relative flex items-center justify-center min-h-screen z-10 px-2">
+        <div className="bg-black/40 backdrop-blur-md shadow-2xl rounded-2xl p-2 w-full max-w-[420px] md:max-w-[468px] min-h-[450px] text-white flex flex-col">
+          <h2 className="text-xl font-bold text-center mb-2">
             Customer Sign Up
           </h2>
 
           {error && (
-            <p className="text-red-400 text-center mb-4 font-medium">{error}</p>
+            <p className="text-red-400 text-center mb-2 font-medium">{error}</p>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-2">
-            <div className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit} className="flex flex-col flex-grow h-full justify-between">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 flex-grow">
               {/* Full Name */}
               <div>
                 <label className="block mb-1 font-medium">Full Name</label>
@@ -94,8 +94,7 @@ function Signup() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Enter your name"
-                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2
-                             focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
+                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
                   required
                 />
               </div>
@@ -107,8 +106,7 @@ function Signup() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2
-                             focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
+                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
                   required
                 />
               </div>
@@ -120,21 +118,7 @@ function Signup() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Enter your address"
-                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2
-                             focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
-                  required
-                />
-              </div>
-              {/* Password */}
-              <div>
-                <label className="block mb-1 font-medium">Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2
-                             focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
+                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
                   required
                 />
               </div>
@@ -146,23 +130,31 @@ function Signup() {
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="Enter your phone number"
-                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2
-                             focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
+                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
+                  required
+                />
+              </div>
+              {/* Password */}
+              <div>
+                <label className="block mb-1 font-medium">Password</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
                   required
                 />
               </div>
               {/* Confirm Password */}
               <div>
-                <label className="block mb-1 font-medium">
-                  Confirm Password
-                </label>
+                <label className="block mb-1 font-medium">Confirm Password</label>
                 <input
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   placeholder="Confirm your password"
-                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2
-                             focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
+                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none placeholder-gray-400"
                   required
                 />
               </div>
@@ -170,14 +162,14 @@ function Signup() {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full bg-red-600 text-white font-semibold py-2 rounded-lg hover:bg-red-700 transition mt-4"
+              className="w-full bg-red-600 text-white font-semibold py-1.5 rounded-lg hover:bg-red-700 transition mt-2"
             >
               Sign Up
             </button>
           </form>
 
           {/* Extra Links */}
-          <p className="text-center text-gray-300 mt-6">
+          <p className="text-center text-gray-300 mt-3">
             Already have an account?{" "}
             <span
               onClick={() => navigate("/login")}

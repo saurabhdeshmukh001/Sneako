@@ -98,11 +98,13 @@ function Home() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen w-full overflow-x-hidden">
       <Navbar />
 
       {/* 1. Main Carousel Section */}
-      <Carousel />
+      <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8">
+        <Carousel />
+      </div>
 
       {/* 2. Promotional Banner Section */}
       <PromotionBanner />
@@ -111,7 +113,7 @@ function Home() {
       <ProductGridHeader />
 
       {/* 4. Product Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-16 w-full">
         {filteredProducts.length === 0 ? (
           <div className="text-center py-10">
             <p className="text-xl text-gray-500">
@@ -119,7 +121,7 @@ function Home() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
