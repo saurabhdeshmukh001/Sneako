@@ -26,8 +26,13 @@ function Login() {
       );
       const data = response.data;
       if (data.jwt) {
-        localStorage.setItem("user", JSON.stringify(data));
+        // Check if selected role matches backend user role
         const userRole = data.role || role;
+        if (userRole !== role) {
+          setError("Selected role does not match your account role. Please select the correct role.");
+          return;
+        }
+        localStorage.setItem("user", JSON.stringify(data));
         if (userRole === "customer") {
           navigate("/home");
         } else if (userRole === "seller") {
