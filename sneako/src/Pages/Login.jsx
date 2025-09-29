@@ -9,6 +9,7 @@ function Login() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -31,11 +32,15 @@ function Login() {
           return;
         }
         localStorage.setItem("user", JSON.stringify(data));
-        if (role === "customer") {
-          navigate("/home");
-        } else if (role === "seller") {
-          navigate("/admin");
-        }
+        setSuccess(true);
+        setTimeout(() => {
+          setSuccess(false);
+          if (role === "customer") {
+            navigate("/home");
+          } else if (role === "seller") {
+            navigate("/admin");
+          }
+        }, 1500);
       } else {
         setError(data.message || "Invalid credentials. Please try again.");
       }
@@ -49,6 +54,13 @@ function Login() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
+      {/* Success Popup */}
+      {success && (
+        <div className="fixed top-8 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg font-semibold">
+          Login Successfully!
+        </div>
+      )}
+
       {/* Video Background */}
       <video
         autoPlay
