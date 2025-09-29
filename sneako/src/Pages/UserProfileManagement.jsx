@@ -1,8 +1,8 @@
 // pages/UserProfileManagement.jsx (Edit Functionality Removed)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
-import { FiUsers, FiTrash2, FiX } from 'react-icons/fi'; 
-import axios from "axios";
+import { FiUsers, FiTrash2, FiX } from 'react-icons/fi'; // Removed FiEdit2
+import { fetchUsers, deleteUser } from "../api/api";
 
 const UserProfileManagement = () => {
     const navigate = useNavigate();
@@ -11,11 +11,9 @@ const UserProfileManagement = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get("http://localhost:3000/api/v1/users")
+        fetchUsers()
             .then((response) => {
-                const filteredUsers = Array.isArray(response.data)
-                    ? response.data.filter(user => user.role === "customer")
-                    : [];
+                const filteredUsers = response.filter(user => user.role === "customer");
                 setUsers(filteredUsers);
                 setLoading(false);
             })
@@ -30,7 +28,7 @@ const UserProfileManagement = () => {
     const handleDelete = (id) => {
         if (!window.confirm("Are you sure you want to delete this user?")) return;
         
-        axios.delete(`http://localhost:3000/api/v1//users/${id}`)
+        deleteUser(id)
             .then(() => {
                 setUsers(users.filter(user => user.id !== id));
                 setSuccessMessage("User deleted successfully!");

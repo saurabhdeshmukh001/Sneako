@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { FiX, FiArrowLeft, FiPlusSquare } from 'react-icons/fi'; // Icons for professional look
+import axios from "axios";
 
 function AddProduct() {
     const [product, setProduct] = useState({
@@ -37,19 +38,14 @@ function AddProduct() {
         setErrorMessage("");
         
         try {
-            // Direct API call to backend
-            const response = await fetch("http://localhost:3000/api/v1/products", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    ...product,
-                    price: parseFloat(product.price),
-                    stock: parseInt(product.stock)
-                })
+            // Direct API call to backend using axios
+            const response = await axios.post("http://localhost:3000/api/v1/products", {
+                id: String(Date.now()),
+                ...product,
+                price: parseFloat(product.price),
+                stock: parseInt(product.stock)
             });
-            if (!response.ok) {
+            if (response.status !== 200 && response.status !== 201) {
                 throw new Error("Failed to add product");
             }
             setSuccessMessage("New product added successfully!");
