@@ -119,7 +119,7 @@ const Carousel = () => {
     // --- Render Component ---
 
     return (
-        // Added ref and onTransitionEnd handler to control the seamless loop
+        // Changed from relative w-full max-w-7xl mx-auto ... to relative w-full h-[500px] sm:h-[600px] overflow-hidden shadow-2xl
         <div className="relative w-full h-[500px] sm:h-[600px] overflow-hidden shadow-2xl">
             {/* Slides Container */}
             <div

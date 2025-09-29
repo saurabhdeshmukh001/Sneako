@@ -12,6 +12,7 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [greet, setGreet] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -45,7 +46,11 @@ function Signup() {
       );
       localStorage.setItem("user", JSON.stringify(response.data));
       setError("");
-      navigate("/home");
+      setGreet(true);
+      setTimeout(() => {
+        setGreet(false);
+        navigate("/home");
+      }, 1500);
     } catch (err) {
       console.log("Signup error:", err.response);
       setError(
@@ -56,6 +61,13 @@ function Signup() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
+      {/* Greeting Popup */}
+      {greet && (
+        <div className="fixed top-8 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg font-semibold">
+          Welcome! Signup Successful
+        </div>
+      )}
+
       {/* Video Background */}
       <video
         autoPlay
