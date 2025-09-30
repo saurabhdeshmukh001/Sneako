@@ -162,31 +162,31 @@ const StatCard = ({ title, value, change, icon: IconComponent, color }) => {
 
   return (
     <div className="flex items-center justify-between p-6 bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition duration-300">
-                 {" "}
+      {" "}
       <div>
-                       {" "}
+        {" "}
         <span className="text-sm font-medium text-gray-500 uppercase tracking-wider">
           {title}
         </span>
-                       {" "}
+        {" "}
         <div className="text-3xl font-extrabold text-gray-900 mt-1">
           {value}
         </div>
-                       {" "}
+        {" "}
         <div
           className={`text-xs font-semibold px-2 py-0.5 rounded-full inline-block mt-2 ${changeColor}`}
         >
-                              {change}               {" "}
+           {change}{" "}
         </div>
-                   {" "}
+      {" "}
       </div>
-                 {" "}
+      {" "}
       <div
         className={`w-14 h-14 flex items-center justify-center ${color} rounded-full text-white text-2xl shadow-lg`}
       >
-                        {IconComponent}           {" "}
+         {IconComponent}{" "}
       </div>
-             {" "}
+      {" "}
     </div>
   );
 };

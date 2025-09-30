@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 
 // Import admin components
-import ProductManagement from "./ProductManagement";
+import ProductManagement from "../Pages/ProductManagement";
 import UserProfileManagement from "./UserProfileManagement";
 import AdminOverview from "./AdminOverview";
 import OrderTrackingAdmin from "./OrderTrackingAdmin"; // Import the new component
