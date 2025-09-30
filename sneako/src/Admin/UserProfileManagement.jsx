@@ -1,19 +1,20 @@
-// pages/UserProfileManagement.jsx (Edit Functionality Removed)
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; 
-import { FiUsers, FiTrash2, FiX } from 'react-icons/fi'; // Removed FiEdit2
-import { fetchUsers, deleteUser } from "../api/api";
-
+import { useNavigate } from "react-router-dom";
+import { FiUsers, FiTrash2, FiX } from 'react-icons/fi';
+import axios from "axios";
+ 
 const UserProfileManagement = () => {
     const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [successMessage, setSuccessMessage] = useState("");
     const [loading, setLoading] = useState(true);
-
+ 
     useEffect(() => {
-        fetchUsers()
+        axios.get("http://localhost:3000/api/v1/users")
             .then((response) => {
-                const filteredUsers = response.filter(user => user.role === "customer");
+                const filteredUsers = Array.isArray(response.data)
+                    ? response.data.filter(user => user.role === "customer")
+                    : [];
                 setUsers(filteredUsers);
                 setLoading(false);
             })
@@ -22,13 +23,13 @@ const UserProfileManagement = () => {
                 setLoading(false);
             });
     }, []);
-
+ 
     // NOTE: handleEdit function removed as requested
-
+ 
     const handleDelete = (id) => {
         if (!window.confirm("Are you sure you want to delete this user?")) return;
-        
-        deleteUser(id)
+       
+        axios.delete(`http://localhost:3000/api/v1//users/${id}`)
             .then(() => {
                 setUsers(users.filter(user => user.id !== id));
                 setSuccessMessage("User deleted successfully!");
@@ -40,22 +41,22 @@ const UserProfileManagement = () => {
                 setTimeout(() => setSuccessMessage(""), 3000);
             });
     };
-
+ 
     if (loading) {
         return <div className="p-8 text-center text-gray-700">Loading customer data.......</div>;
     }
-
+ 
     if (!loading && users.length === 0) {
         return <div className="p-8 text-center text-gray-700">No customer profiles found</div>;
     }
-
+ 
     return (
         <div className="p-4 sm:p-8 bg-gray-50 min-h-screen">
             <div className="max-w-7xl mx-auto">
                 <h1 className="text-4xl font-extrabold text-gray-900 mb-8 border-b pb-3">
                     Customer User Management <FiUsers className="inline text-teal-600 mb-1" />
                 </h1>
-
+ 
                 {/* Success Message Alert (Centered and prominent) */}
                 {successMessage && (
                     <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-xl z-50 flex items-center space-x-3 transition duration-300">
@@ -65,7 +66,7 @@ const UserProfileManagement = () => {
                         </button>
                     </div>
                 )}
-
+ 
                 {/* User Table Card */}
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
                     <div className="overflow-x-auto">
@@ -107,7 +108,7 @@ const UserProfileManagement = () => {
                         </table>
                     </div>
                 </div>
-
+ 
                 <div className="mt-6 text-center text-sm text-gray-500">
                     Total active customer profiles: {users.length}
                 </div>
@@ -115,5 +116,5 @@ const UserProfileManagement = () => {
         </div>
     );
 };
-
+ 
 export default UserProfileManagement;

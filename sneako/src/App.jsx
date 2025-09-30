@@ -1,16 +1,16 @@
 // App.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import AddProduct from "./Pages/AddProduct";
-import UpdateProduct from "./components/UpdateProduct";
+import AddProduct from "./Admin/AddProduct"
+import UpdateProduct from "./Admin/UpdateProduct"
 import Landing from "./Pages/Landing";
-import Login from "./Pages/Login";
-import Signup from "./Pages/Signup";
+import Login from "./Auth/Login";
+import Signup from "./Auth/Signup";
 import Home from "./Pages/Home";
-import Admin from "./Pages/admin";
+import Admin from "./Admin/admin";
 import Cart from "./Pages/Cart";
 import ProfileManage from "./Pages/ProfileManage";
 import ProductManagement from "./Pages/ProductManagement";
-import UserProfileManagement from "./Pages/UserProfileManagement";
+import UserProfileManagement from "./Admin/UserProfileManagement";
 import ProductDetails from "./Pages/ProductDetails";
 import CheckoutPage from "./Pages/CheckoutPage";
 import OrderConfirmation from "./Pages/OrderConfirmation";
