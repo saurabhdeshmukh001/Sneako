@@ -38,7 +38,6 @@ function AddProduct() {
         setErrorMessage("");
         
         try {
-            // Direct API call to backend using axios
             const response = await axios.post("http://localhost:3000/api/v1/products", {
                 id: String(Date.now()),
                 ...product,
@@ -61,7 +60,6 @@ function AddProduct() {
         }
     };
     
-    // FIX 4: Centralized loading state and layout for consistency
     if (loading) {
         return (
             <div className="flex flex-col min-h-screen bg-gray-50">
@@ -76,11 +74,9 @@ function AddProduct() {
     
 
     return (
-        // FIX 5: Use a consistent Flexbox layout to push the footer to the bottom
         <div className="flex flex-col min-h-screen bg-gray-50">
             <Navbar />
             <div className="flex-grow">
-                {/* Fixed success/error message alert */}
                 {successMessage && (
                     <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-xl z-50 flex items-center space-x-3 transition duration-300">
                         <span>{successMessage}</span>
@@ -101,7 +97,6 @@ function AddProduct() {
                 <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8 mt-10 mb-12">
                     <div className="bg-white p-8 lg:p-12 shadow-xl rounded-xl border border-gray-200">
 
-                        {/* FIX 6: Header with Go Back button */}
                         <div className="flex justify-between items-center mb-8 border-b pb-4">
                             <h2 className="text-3xl font-extrabold text-gray-900 flex items-center">
                                 Add New Product <FiPlusSquare className="inline text-blue-600 ml-3" />
@@ -115,7 +110,6 @@ function AddProduct() {
                             </button>
                         </div>
                         
-                        {/* FIX 7: Beautified Form */}
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
                                 <label className="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
@@ -205,7 +199,7 @@ function AddProduct() {
                     </div>
                 </div>
             </div>
-            {/* <Footer /> */}
+            <Footer/>
         </div>
     );
 }

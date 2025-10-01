@@ -1,4 +1,3 @@
-// components/OrderTrackingAdmin.jsx (Beautified - using Table layout)
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FiTruck, FiCheckCircle, FiAlertTriangle } from 'react-icons/fi';
@@ -18,7 +17,6 @@ function OrderTrackingAdmin() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Function to fetch and merge order/user data (left unchanged as logic is good)
     useEffect(() => {
         const fetchOrdersAndUsers = async () => {
             try {
@@ -101,7 +99,6 @@ function OrderTrackingAdmin() {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm">
-                                            {/* Status Dropdown */}
                                             <select
                                                 value={order.status}
                                                 onChange={(e) => handleStatusChange(order.id, e.target.value)}

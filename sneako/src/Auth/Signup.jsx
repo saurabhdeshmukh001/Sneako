@@ -64,7 +64,7 @@ function Signup() {
       {/* Greeting Popup */}
       {greet && (
         <div className="fixed top-8 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg font-semibold">
-          Welcome! Signup Successful
+           Signup Successfull!
         </div>
       )}
 

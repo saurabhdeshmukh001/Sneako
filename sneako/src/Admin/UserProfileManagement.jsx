@@ -57,7 +57,6 @@ const UserProfileManagement = () => {
                     Customer User Management <FiUsers className="inline text-teal-600 mb-1" />
                 </h1>
  
-                {/* Success Message Alert (Centered and prominent) */}
                 {successMessage && (
                     <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-xl z-50 flex items-center space-x-3 transition duration-300">
                         <span>{successMessage}</span>
@@ -67,13 +66,11 @@ const UserProfileManagement = () => {
                     </div>
                 )}
  
-                {/* User Table Card */}
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    {/* Removed 'ID' for cleaner display, keeping Name, Email, Role, Actions */}
                                     {['Name', 'Email', 'Role', 'Actions'].map((header) => (
                                         <th key={header} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             {header}
@@ -92,7 +89,6 @@ const UserProfileManagement = () => {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm space-x-2">
-                                            {/* Only Delete button remains */}
                                             <button
                                                 onClick={() => handleDelete(id)}
                                                 className="text-red-600 hover:text-red-800 transition"

@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import ProductCard from "./productCard";
 import Carousel from "../components/Carousel";
+import Footer from "../components/Footer";
 // Assuming ProductCard is available in the current directory or imported correctly
 
 function Home() {
@@ -13,6 +14,8 @@ function Home() {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [success, setSuccess] = useState(false);
+
 
   useEffect(() => {
     axios
@@ -69,14 +72,14 @@ function Home() {
         fresh street style.
       </p>
       <button
-        onClick={() => navigate()} // Assuming an accessories route exists
+        onClick={() => {setSuccess(true) ; setTimeout(() => setSuccess(false), 2000);}}
+         // Assuming an accessories route exists
         className="bg-red-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-red-700 transition duration-300 transform hover:scale-105"
       >
         Explore Promotions
       </button>
     </div>
   );
-  // -----------------------------------------------------------------
 
   const ProductGridHeader = () => {
     const title =
@@ -100,6 +103,11 @@ function Home() {
   return (
     <div className="bg-gray-50 min-h-screen w-full overflow-x-hidden">
       <Navbar />
+      {success && (
+        <div className="fixed top-8 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg font-semibold">
+         This feature will be available soon!
+        </div>
+      )} 
 
       {/* 1. Main Carousel Section */}
       <div className="w-full">
@@ -128,9 +136,7 @@ function Home() {
           </div>
         )}
       </div>
-
-      {/* Footer component would typically go here */}
-      {/* Assuming Footer is not included here as it wasn't in your original Home.jsx */}
+      <Footer />
     </div>
   );
 }

@@ -1,15 +1,15 @@
-// pages/Admin.jsx
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 
-// Import admin components
+
 import ProductManagement from "../Pages/ProductManagement";
 import UserProfileManagement from "./UserProfileManagement";
 import AdminOverview from "./AdminOverview";
-import OrderTrackingAdmin from "./OrderTrackingAdmin"; // Import the new component
+import OrderTrackingAdmin from "./OrderTrackingAdmin"; 
 
 function Admin() {
   const navigate = useNavigate();
@@ -28,7 +28,6 @@ function Admin() {
       <Navbar />
 
       <div className="pt-20 px-4 md:px-8 lg:px-12 pb-8">
-        {/* Tab Navigation */}
         <div className="bg-white p-2 rounded-lg shadow-md flex justify-around mb-8 max-w-4xl mx-auto">
           <button
             onClick={() => setActiveTab("Overview")}
@@ -64,7 +63,6 @@ function Admin() {
           </button>
         </div>
 
-        {/* Content based on active tab */}
         <div className="max-w-6xl mx-auto">
           {activeTab === "Overview" && <AdminOverview />}
           {activeTab === "Products" && <ProductManagement />}
