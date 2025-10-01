@@ -110,12 +110,14 @@ function Home() {
       )} 
 
       {/* 1. Main Carousel Section */}
-      <div className="w-full">
-        <Carousel />
-      </div>
+      {(!searchQuery || searchQuery.trim() === "") && (
+        <div className="w-full">
+          <Carousel />
+        </div>
+      )}
 
       {/* 2. Promotional Banner Section */}
-      <PromotionBanner />
+      {(!searchQuery || searchQuery.trim() === "") && <PromotionBanner />}
 
       {/* 3. Product Grid Header */}
       <ProductGridHeader />
