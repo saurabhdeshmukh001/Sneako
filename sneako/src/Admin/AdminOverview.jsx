@@ -201,26 +201,25 @@ const StatusActionCard = ({
   <div
     className={`p-6 rounded-xl text-center shadow-lg border border-gray-200 ${bgColor} transition duration-300 hover:scale-[1.02] cursor-pointer`}
   >
-           {" "}
+    {" "}
     <div className={`text-5xl mx-auto mb-3 ${color}`}>
-                  {IconComponent}       {" "}
+      {IconComponent}{" "}
     </div>
-           {" "}
+    {" "}
     <div className="text-lg font-bold text-gray-800">
-                  {label}       {" "}
+     {label}{" "}
     </div>
-           {" "}
+    {" "}
     {value && (
       <div className="text-3xl font-extrabold text-gray-900 mt-1">
-                        {value}           {" "}
+         {value}{" "}
       </div>
     )}
-       {" "}
+    {" "}
   </div>
 );
 
 const AdminOverview = () => {
-  // --- State to hold the fetched data ---
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);

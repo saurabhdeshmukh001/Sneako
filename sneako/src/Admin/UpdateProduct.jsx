@@ -1,13 +1,13 @@
-// pages/UpdateProduct.jsx
+
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { FiX, FiArrowLeft, FiEdit3 } from "react-icons/fi"; // Icons for a professional look
+import { FiX, FiArrowLeft, FiEdit3 } from "react-icons/fi"; 
 
 const UpdateProduct = () => {
-  const { id } = useParams(); // Get product ID from URL
+  const { id } = useParams(); 
   const navigate = useNavigate();
 
   const [product, setProduct] = useState({
@@ -15,8 +15,8 @@ const UpdateProduct = () => {
     category: "",
     price: "",
     stock: 0,
-    description: "", // Added description for a more complete form
-    image: "", // Added image URL
+    description: "", 
+    image: "", 
   });
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
@@ -38,17 +38,17 @@ const UpdateProduct = () => {
     loadProduct();
   }, [id]);
 
-  // Handle form input
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submit
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Ensure price and stock are numbers
+    
       const updatedProduct = {
         ...product,
         price: Number(product.price),
@@ -70,7 +70,6 @@ const UpdateProduct = () => {
     }
   };
 
-  // Handle "Back" button click to navigate back to the product management page
   const handleGoBack = () => {
     navigate("/admin");
   };
@@ -90,9 +89,7 @@ const UpdateProduct = () => {
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
 
-      {/* Main content wrapper with flex-grow */}
       <div className="flex-grow">
-        {/* Fixed success message alert */}
         {successMessage && (
           <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-xl z-50 flex items-center space-x-3 transition duration-300">
             <span>{successMessage}</span>
@@ -105,10 +102,8 @@ const UpdateProduct = () => {
           </div>
         )}
 
-        {/* Form Container */}
         <div className="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8 mt-10 mb-12">
           <div className="bg-white p-8 lg:p-12 shadow-xl rounded-xl border border-gray-200">
-            {/* Header and Back Button */}
             <div className="flex justify-between items-center mb-8 border-b pb-4">
               <h2 className="text-3xl font-extrabold text-gray-900">
                 Edit Product <FiEdit3 className="inline text-yellow-600 mb-1" />
