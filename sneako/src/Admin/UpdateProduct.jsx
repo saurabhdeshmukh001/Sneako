@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
@@ -63,7 +63,7 @@ const UpdateProduct = () => {
       setTimeout(() => {
         setSuccessMessage("");
         navigate("/admin");
-      }, 2000);
+      }, 1000);
     } catch (error) {
       console.error("Error updating product:", error);
       setSuccessMessage("Error updating product.");
