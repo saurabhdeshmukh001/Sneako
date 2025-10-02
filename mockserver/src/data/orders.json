@@ -1,3 +1,68 @@
 {
-  "orders": []
+  "orders": [
+    {
+      "userId": "2",
+      "products": [
+        {
+          "productId": "12",
+          "name": "Puma Suede Classic",
+          "price": 6500,
+          "quantity": 1,
+          "size": "N/A"
+        }
+      ],
+      "totalPrice": 6500,
+      "shippingAddress": "kg",
+      "paymentMethod": "Credit/Debit Card",
+      "status": "Processing",
+      "orderDate": "2025-10-02T11:20:40.258Z",
+      "trackingNumber": "TRACK-241193",
+      "id": "1"
+    },
+    {
+      "userId": "2",
+      "products": [
+        {
+          "productId": "12",
+          "name": "Puma Suede Classic",
+          "price": 6500,
+          "quantity": 1,
+          "size": 9
+        },
+        {
+          "productId": "17",
+          "name": "Reebok Club C 85",
+          "price": 6800,
+          "quantity": 1,
+          "size": 9
+        }
+      ],
+      "totalPrice": 13300,
+      "shippingAddress": "kxg",
+      "paymentMethod": "Credit/Debit Card",
+      "status": "Processing",
+      "orderDate": "2025-10-02T11:21:17.723Z",
+      "trackingNumber": "TRACK-295696",
+      "id": "2"
+    },
+    {
+      "userId": "2",
+      "products": [
+        {
+          "productId": "12",
+          "name": "Puma Suede Classic",
+          "price": 6500,
+          "quantity": 1,
+          "size": "N/A"
+        }
+      ],
+      "totalPrice": 6500,
+      "shippingAddress": "kgx",
+      "paymentMethod": "Credit/Debit Card",
+      "status": "Processing",
+      "orderDate": "2025-10-02T11:23:36.349Z",
+      "trackingNumber": "TRACK-533708",
+      "id": "3"
+    }
+  ]
 }
