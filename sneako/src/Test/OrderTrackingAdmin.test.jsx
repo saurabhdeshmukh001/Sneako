@@ -4,7 +4,7 @@ import axios from 'axios';
 
 vi.mock('axios');
 
-import OrderTrackingAdmin from '../Pages/OrderTrackingAdmin';
+import OrderTrackingAdmin from '../Admin/OrderTrackingAdmin';
 
 test('renders Order Management heading and order row', async () => {
   axios.get.mockImplementation((url) => {

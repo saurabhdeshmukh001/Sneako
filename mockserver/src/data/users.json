@@ -8,34 +8,12 @@
       "role": "seller"
     },
     {
-      "id": "576e",
-      "name": "Saurabh",
-      "phone": "8530274378",
-      "email": "saurabh@gmail.com",
-      "password": "saurabh123",
-      "role": "customer",
-      "address": "hjhja"
-    },
-    {
-      "address": "dad",
-      "id": "3"
-    },
-    {
-      "id": "4",
+      "id": "3",
       "name": "harsh",
-      "phone": "972784283",
+      "phone": "08530472854",
       "email": "h@gmail.com",
-      "password": "123456789",
-      "address": "Pune",
-      "role": "customer"
-    },
-    {
-      "id": "5",
-      "name": "Prerit",
-      "phone": "1234567890",
-      "email": "abc@example.com",
-      "password": "prerit123",
-      "address": "Jammu",
+      "password": "12345",
+      "address": "xyz",
       "role": "customer"
     }
   ]

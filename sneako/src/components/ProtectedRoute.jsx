@@ -1,12 +1,9 @@
-// components/ProtectedRoute.jsx
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const userString = localStorage.getItem('user');
     const user = userString ? JSON.parse(userString) : null;
     
-    // If the user is not authenticated, redirect to the login page
     if (!user) {
         return <Navigate to="/login" replace />;
     }
