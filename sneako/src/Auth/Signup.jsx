@@ -39,7 +39,6 @@ function Signup() {
     };
 
     try {
-      // Use the new register API
       const response = await axios.post(
         "http://localhost:3000/api/v1/auth/register",
         newUser
@@ -61,14 +60,12 @@ function Signup() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      {/* Greeting Popup */}
       {greet && (
         <div className="fixed top-8 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg font-semibold">
            Signup Successfull!
         </div>
       )}
 
-      {/* Video Background */}
       <video
         autoPlay
         loop
@@ -80,12 +77,10 @@ function Signup() {
         Your browser does not support the video tag.
       </video>
 
-      {/* Overlay to decrease video opacity */}
       <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
 
       <Navbar></Navbar>
 
-      {/* Signup Card */}
       <div className="relative flex items-center justify-center min-h-screen z-10 px-2">
         <div className="bg-black/40 backdrop-blur-md shadow-2xl rounded-2xl p-2 w-full max-w-[420px] md:max-w-[468px] min-h-[450px] text-white flex flex-col">
           <h2 className="text-xl font-bold text-center mb-2">
@@ -98,7 +93,6 @@ function Signup() {
 
           <form onSubmit={handleSubmit} className="flex flex-col flex-grow h-full justify-between">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 flex-grow">
-              {/* Full Name */}
               <div>
                 <label className="block mb-1 font-medium">Full Name</label>
                 <input
@@ -110,7 +104,6 @@ function Signup() {
                   required
                 />
               </div>
-              {/* Email */}
               <div>
                 <label className="block mb-1 font-medium">Email</label>
                 <input
@@ -122,7 +115,6 @@ function Signup() {
                   required
                 />
               </div>
-              {/* Address */}
               <div>
                 <label className="block mb-1 font-medium">Address</label>
                 <input
@@ -134,7 +126,6 @@ function Signup() {
                   required
                 />
               </div>
-              {/* Phone Number */}
               <div>
                 <label className="block mb-1 font-medium">Phone Number</label>
                 <input
@@ -146,7 +137,6 @@ function Signup() {
                   required
                 />
               </div>
-              {/* Password */}
               <div>
                 <label className="block mb-1 font-medium">Password</label>
                 <input
@@ -158,7 +148,6 @@ function Signup() {
                   required
                 />
               </div>
-              {/* Confirm Password */}
               <div>
                 <label className="block mb-1 font-medium">Confirm Password</label>
                 <input
@@ -171,7 +160,6 @@ function Signup() {
                 />
               </div>
             </div>
-            {/* Submit */}
             <button
               type="submit"
               className="w-full bg-red-600 text-white font-semibold py-1.5 rounded-lg hover:bg-red-700 transition mt-2"
@@ -180,7 +168,6 @@ function Signup() {
             </button>
           </form>
 
-          {/* Extra Links */}
           <p className="text-center text-gray-300 mt-3">
             Already have an account?{" "}
             <span

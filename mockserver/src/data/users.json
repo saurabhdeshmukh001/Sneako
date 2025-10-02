@@ -5,16 +5,16 @@
       "email": "seller@example.com",
       "name": "Seller",
       "password": "seller123",
-      "role": "seller",
-      "address": "kgx"
+      "role": "seller"
     },
+    
     {
-      "id": "2",
-      "name": "saurabh",
-      "phone": "9284672854",
-      "email": "s@gmail.com",
+      "id": "3",
+      "name": "Saurabh",
+      "phone": "08530274378",
+      "email": "saurabh@gmail.com",
       "password": "12345",
-      "address": "kailash pg",
+      "address": "CBE CHIL - SEZ -FO,Special Economic Zone, Saravanampatti VIA, Coimbatore North Tal, Keeranatham Village",
       "role": "customer"
     }
   ]

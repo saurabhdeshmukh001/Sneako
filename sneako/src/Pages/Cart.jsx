@@ -1,8 +1,6 @@
-// pages/Cart.jsx (Fixed: Smooth Visual Pulse Transition)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-// Using icons for a professional look (FiPlus, FiMinus, FiTrash)
 import { FiPlus, FiMinus, FiTrash } from "react-icons/fi";
 import axios from "axios";
 
@@ -10,11 +8,8 @@ function Cart() {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
-  const [lastUpdatedItemId, setLastUpdatedItemId] = useState(null); // New state for pulse effect
+  const [lastUpdatedItemId, setLastUpdatedItemId] = useState(null);
 
-  // --- Utility Functions ---
-
-  // Fetches cart items from the server
   useEffect(() => {
     const fetchItems = async () => {
       try {
@@ -27,23 +22,20 @@ function Cart() {
     fetchItems();
   }, []);
 
-  // Recalculates total whenever cartItems change
   useEffect(() => {
     const newTotal = cartItems.reduce((sum, item) => sum + item.totalPrice, 0);
     setTotal(newTotal);
   }, [cartItems]);
 
-  // Manages the visual pulse effect timeout
   useEffect(() => {
     if (lastUpdatedItemId) {
       const timer = setTimeout(() => {
         setLastUpdatedItemId(null);
-      }, 500); // Pulse lasts 500ms
+      }, 500); 
       return () => clearTimeout(timer);
     }
   }, [lastUpdatedItemId]);
 
-  // --- Cart Modification Handlers ---
 
   const updateCartItemQuantity = async (id, newQuantity) => {
     const itemToUpdate = cartItems.find((item) => item.id === id);
@@ -52,14 +44,13 @@ function Cart() {
     const newTotalPrice = itemToUpdate.originalPrice * newQuantity;
 
     try {
-      // 1. Send API request
+     
       await axios.put(`http://localhost:3000/api/v1/cart/${id}`, {
         ...itemToUpdate,
         quantity: newQuantity,
         totalPrice: newTotalPrice,
       });
 
-      // 2. Update state only AFTER successful API response (The "normal transition")
       setCartItems(
         cartItems.map((item) =>
           item.id === id
@@ -67,10 +58,9 @@ function Cart() {
             : item
         )
       );
-      setLastUpdatedItemId(id); // Trigger the visual pulse
+      setLastUpdatedItemId(id); 
     } catch (error) {
       console.error("Error updating item quantity:", error);
-      // Optional: Show error message to user
     }
   };
 
@@ -96,22 +86,18 @@ function Cart() {
     try {
       await axios.delete(`http://localhost:3000/api/v1/cart/${idToRemove}`);
 
-      // Update state only AFTER successful API response
       setCartItems(cartItems.filter((item) => item.id !== idToRemove));
     } catch (error) {
       console.error("Error removing item from cart:", error);
     }
-    // Note: The visual pulse is not triggered for deletion as the item disappears.
   };
 
-  // --- Order/Checkout Handler ---
   const handlePlaceOrder = () => {
     if (cartItems.length > 0) {
       navigate("/checkout", { state: { cartItems, total: total } });
     }
   };
 
-  // --- Component Render ---
 
   return (
     <div className="bg-gray-50 min-h-screen w-full overflow-x-hidden">
@@ -135,7 +121,6 @@ function Cart() {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
-            {/* Cart Items List - Left/Main Column */}
             <div className="lg:col-span-2 space-y-3 sm:space-y-4">
               <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-gray-800">
                 Items in Cart ({cartItems.length})
@@ -147,18 +132,16 @@ function Cart() {
                   className={`flex flex-col sm:flex-row items-center border border-gray-200 rounded-xl shadow-md p-2 sm:p-4 relative 
                                         ${
                                           lastUpdatedItemId === item.id
-                                            ? "bg-green-50 transition-all duration-300 shadow-xl" // Pulse color
-                                            : "bg-white transition duration-300 hover:shadow-lg" // Normal color
+                                            ? "bg-green-50 transition-all duration-300 shadow-xl" 
+                                            : "bg-white transition duration-300 hover:shadow-lg" 
                                         }`}
                 >
-                  {/* Image Section */}
                   <img
                     src={item.image}
                     alt={item.name}
                     className="w-full h-32 sm:h-24 sm:w-24 object-cover rounded-lg mr-0 sm:mr-4 flex-shrink-0"
                   />
 
-                  {/* Details Section */}
                   <div className="flex-grow my-2 sm:my-0 w-full">
                     <h3 className="text-base sm:text-lg font-bold text-gray-900">
                       {item.name}
@@ -174,7 +157,6 @@ function Cart() {
                     </p>
                   </div>
 
-                  {/* Quantity Control */}
                   <div className="flex items-center space-x-1 sm:space-x-2 border border-gray-300 rounded-lg p-1 mx-0 sm:mx-4 mt-2 sm:mt-0">
                     <button
                       onClick={() => handleDecrement(item.id)}
@@ -209,7 +191,6 @@ function Cart() {
               ))}
             </div>
 
-            {/* Order Summary - Right/Sidebar Column */}
             <div className="lg:col-span-1 bg-white p-4 sm:p-6 rounded-xl shadow-lg h-fit sticky top-10 border border-gray-200 mt-6 lg:mt-0">
               <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 border-b pb-2 sm:pb-3 text-gray-900">
                 Order Summary

@@ -1,4 +1,3 @@
-// pages/ProductDetails.jsx (Updated Version with Axios)
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -127,7 +126,6 @@ function ProductDetails() {
       <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 mt-10">
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Product Image Section (Left Column) */}
             <div className="p-8 bg-gray-100 flex items-center justify-center">
               <img
                 src={product.image}
@@ -136,7 +134,6 @@ function ProductDetails() {
               />
             </div>
 
-            {/* Product Details Section (Right Column) */}
             <div className="p-8 lg:p-12 flex flex-col justify-between">
               <div>
                 <p className="text-sm font-semibold uppercase text-red-600 mb-2">
@@ -150,7 +147,6 @@ function ProductDetails() {
                   ₹{product.price.toLocaleString("en-IN")}
                 </p>
 
-                {/* Size Selection */}
                 <div className="mb-8">
                   <h3 className="text-lg font-bold text-gray-800 mb-3">
                     Select Size (US/UK)
@@ -179,7 +175,6 @@ function ProductDetails() {
                   </p>
                 </div>
 
-                {/* Description */}
                 <div className="mb-8 border-t pt-6">
                   <h3 className="text-xl font-bold text-gray-800 mb-3">
                     Product Story
@@ -191,7 +186,6 @@ function ProductDetails() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="flex flex-col space-y-4 pt-6 border-t">
                 <button
                   onClick={handleAddToCart}

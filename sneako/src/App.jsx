@@ -15,7 +15,7 @@ import ProductDetails from "./Pages/ProductDetails";
 import CheckoutPage from "./Pages/CheckoutPage";
 import OrderConfirmation from "./Pages/OrderConfirmation";
 import OrderTracking from "./Pages/OrderTracking"
-import ProtectedRoute from "./components/ProtectedRoute"; // Import the ProtectedRoute component
+import ProtectedRoute from "./components/ProtectedRoute"; 
 
 function App() {
   return (

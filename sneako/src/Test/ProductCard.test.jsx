@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { test, expect } from 'vitest';
 import ProductCard from '../Pages/productCard';
-
 test('renders product details and new arrival badge', () => {
   const product = {
     id: 20,

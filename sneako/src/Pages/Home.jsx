@@ -1,4 +1,3 @@
-// pages/Home.jsx (Beautified Version)
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
@@ -6,7 +5,6 @@ import axios from "axios";
 import ProductCard from "./productCard";
 import Carousel from "../components/Carousel";
 import Footer from "../components/Footer";
-// Assuming ProductCard is available in the current directory or imported correctly
 
 function Home() {
   const navigate = useNavigate();
@@ -28,7 +26,6 @@ function Home() {
     const handleCategorySelect = (e) => {
       setSelectedCategory(e.detail);
     };
-    // This is a custom event listener that relies on Navbar dispatching an event
     window.addEventListener("categorySelected", handleCategorySelect);
     return () =>
       window.removeEventListener("categorySelected", handleCategorySelect);
@@ -73,7 +70,6 @@ function Home() {
       </p>
       <button
         onClick={() => {setSuccess(true) ; setTimeout(() => setSuccess(false), 2000);}}
-         // Assuming an accessories route exists
         className="bg-red-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-red-700 transition duration-300 transform hover:scale-105"
       >
         Explore Promotions
@@ -109,20 +105,16 @@ function Home() {
         </div>
       )} 
 
-      {/* 1. Main Carousel Section */}
       {(!searchQuery || searchQuery.trim() === "") && (
         <div className="w-full">
           <Carousel />
         </div>
       )}
 
-      {/* 2. Promotional Banner Section */}
       {(!searchQuery || searchQuery.trim() === "") && <PromotionBanner />}
 
-      {/* 3. Product Grid Header */}
       <ProductGridHeader />
 
-      {/* 4. Product Grid */}
       <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 pb-16 w-full">
         {filteredProducts.length === 0 ? (
           <div className="text-center py-10">
