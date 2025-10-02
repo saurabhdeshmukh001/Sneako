@@ -1,15 +1,13 @@
-// pages/CheckoutPage.jsx (Enhanced Version)
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer'; // Keep if you use it
+import Footer from '../components/Footer';
 
 function CheckoutPage() {
     const navigate = useNavigate();
     const location = useLocation();
     
-    // Default to an empty object if state is undefined
     const { product, cartItems, total } = location.state || {}; 
 
     const [address, setAddress] = useState('');
@@ -17,36 +15,27 @@ function CheckoutPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // --- Price Calculation and Data Setup ---
-
-    // Determine the items and total regardless of source (Cart or Buy Now)
+    // price calculation
     const itemsToDisplay = product ? [{ 
         ...product, 
-        quantity: location.state?.quantity || 1, // Get quantity from state if available (from Buy Now)
+        quantity: location.state?.quantity || 1,
         totalPrice: product.price * (location.state?.quantity || 1) 
     }] : cartItems;
     
-    // Calculate final subtotal (Total is already passed for cart, but need to calculate for single product)
     const subTotal = total || (product ? product.price * (location.state?.quantity || 1) : 0);
     
-    const SHIPPING_COST = subTotal > 5000 ? 0 : 250; // Example: Free shipping over ₹5000
+    const SHIPPING_COST = subTotal > 5000 ? 0 : 250;
     const finalTotal = subTotal + SHIPPING_COST;
 
     const itemsToOrder = (itemsToDisplay || []).map(item => ({
-        productId: item.productId || item.id, // Use product.id for single product
+        productId: item.productId || item.id,
         name: item.name,
-        price: item.originalPrice || item.price, // originalPrice for cart, price for product
+        price: item.originalPrice || item.price,
         quantity: item.quantity || 1,
-        size: item.size || 'N/A' // Include size from cart/product details if available
+        size: item.size || 'N/A'
     }));
 
-    // useEffect to potentially load user's existing address (Mocking)
-    useEffect(() => {
-        // In a real app, you'd fetch the user's default address here
-        // axios.get(`http://localhost:5001/users/1`).then(res => setAddress(res.data.address || ''));
-    }, []);
-
-    // --- Order Placement Handler ---
+    // order placement
 
     const handlePlaceOrder = async (e) => {
         e.preventDefault();
@@ -64,7 +53,6 @@ function CheckoutPage() {
         setError('');
 
         try {
-            // Simulate logged-in user by getting user from localStorage
             const user = JSON.parse(localStorage.getItem('user'));
             const userId = user && user.id ? String(user.id) : null;
             if (!userId) {
@@ -73,17 +61,15 @@ function CheckoutPage() {
                 return;
             }
 
-            // 1. Update user's address (fetch user, merge address, then PUT)
             const userRes = await axios.get(`http://localhost:3000/api/v1/users/${userId}`);
             const existingUser = userRes.data;
             const updatedUser = { ...existingUser, address };
             await axios.put(`http://localhost:3000/api/v1/users/${userId}`, updatedUser);
 
-            // 2. Create the new order object
             const newOrder = {
                 userId,
                 products: itemsToOrder,
-                totalPrice: finalTotal, // Use the calculated final total
+                totalPrice: finalTotal,
                 shippingAddress: address,
                 paymentMethod: paymentType,
                 status: 'Processing',
@@ -91,16 +77,13 @@ function CheckoutPage() {
                 trackingNumber: `TRACK-${Math.floor(Math.random() * 1000000)}`
             };
 
-            // 3. Post the new order
             const orderResponse = await axios.post("http://localhost:3000/api/v1/orders", newOrder);
             const orderId = orderResponse.data.id;
 
-            // 4. Clear the cart if the order was placed from the cart
             if (cartItems) {
                 await Promise.all(cartItems.map(item => axios.delete(`http://localhost:3000/api/v1/cart/${item.id}`)));
             }
 
-            // 5. Navigate to confirmation page
             navigate(`/order-confirmation/${orderId}`, { state: { order: orderResponse.data } });
 
         } catch (err) {
@@ -111,8 +94,6 @@ function CheckoutPage() {
         }
     };
     
-    // --- Render Component ---
-
     return (
         <div>
             <Navbar />
@@ -135,11 +116,10 @@ function CheckoutPage() {
 
                 {itemsToDisplay.length > 0 && (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                        
-                        {/* Shipping and Payment Form - Left/Main Column */}
+                        {/* form */}
                         <div className="lg:col-span-2 space-y-8">
                             <form onSubmit={handlePlaceOrder}>
-                                {/* Shipping Section */}
+                                {/* shipping */}
                                 <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-md">
                                     <h2 className="text-2xl font-bold mb-6 text-black">1. Shipping Information 🚚</h2>
                                     <div className="mb-4">
@@ -157,7 +137,7 @@ function CheckoutPage() {
                                     <p className="text-sm text-gray-500">Your address will be securely saved for future orders.</p>
                                 </div>
                                 
-                                {/* Payment Section */}
+                                {/* payment */}
                                 <div className="mt-8 p-6 bg-white border border-gray-200 rounded-xl shadow-md">
                                     <h2 className="text-2xl font-bold mb-6 text-black">2. Payment Method 💳</h2>
                                     <div className="space-y-3">
@@ -183,7 +163,6 @@ function CheckoutPage() {
                                     <p className="mt-4 text-sm text-gray-500">All transactions are secured with industry-leading encryption.</p>
                                 </div>
                                 
-                                {/* Error and Final Button */}
                                 {error && <p className="text-red-500 text-center mt-6 font-semibold">{error}</p>}
                                 
                                 <button
@@ -201,7 +180,7 @@ function CheckoutPage() {
                             </form>
                         </div>
                         
-                        {/* Order Summary - Right/Sidebar Column */}
+                        {/* order summary */}
                         <div className="lg:col-span-1 bg-gray-50 p-6 rounded-xl shadow-lg h-fit sticky top-10">
                             <h2 className="text-2xl font-bold mb-6 border-b pb-3 text-gray-900">Order Summary</h2>
                             
@@ -222,7 +201,7 @@ function CheckoutPage() {
                                 ))}
                             </div>
                             
-                            {/* Price Breakdown */}
+                            {/* pricing */}
                             <div className="space-y-2 border-t pt-4">
                                 <div className="flex justify-between text-base text-gray-700">
                                     <span>Subtotal</span>
