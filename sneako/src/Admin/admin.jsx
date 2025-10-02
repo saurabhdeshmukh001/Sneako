@@ -1,24 +1,21 @@
-
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom";
 
-
-import ProductManagement from "../Pages/ProductManagement";
+import ProductManagement from "./ProductManagement";
 import UserProfileManagement from "./UserProfileManagement";
 import AdminOverview from "./AdminOverview";
-import OrderTrackingAdmin from "./OrderTrackingAdmin"; 
+import OrderTrackingAdmin from "./OrderTrackingAdmin";
 
 function Admin() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Overview");
 
-
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('user'));
-    if (!storedUser || storedUser.role !== 'seller') {
-      navigate('/login');
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (!storedUser || storedUser.role !== "seller") {
+      navigate("/login");
     }
   }, [navigate]);
 
@@ -31,7 +28,9 @@ function Admin() {
           <button
             onClick={() => setActiveTab("Overview")}
             className={`py-2 px-6 rounded-md font-medium text-lg transition-all duration-300 ${
-              activeTab === "Overview" ? "bg-blue-500 text-white shadow-lg" : "text-gray-700 hover:bg-gray-100"
+              activeTab === "Overview"
+                ? "bg-blue-500 text-white shadow-lg"
+                : "text-gray-700 hover:bg-gray-100"
             }`}
           >
             Overview
@@ -39,7 +38,9 @@ function Admin() {
           <button
             onClick={() => setActiveTab("Products")}
             className={`py-2 px-6 rounded-md font-medium text-lg transition-all duration-300 ${
-              activeTab === "Products" ? "bg-blue-500 text-white shadow-lg" : "text-gray-700 hover:bg-gray-100"
+              activeTab === "Products"
+                ? "bg-blue-500 text-white shadow-lg"
+                : "text-gray-700 hover:bg-gray-100"
             }`}
           >
             Products
@@ -47,7 +48,9 @@ function Admin() {
           <button
             onClick={() => setActiveTab("Orders")}
             className={`py-2 px-6 rounded-md font-medium text-lg transition-all duration-300 ${
-              activeTab === "Orders" ? "bg-blue-500 text-white shadow-lg" : "text-gray-700 hover:bg-gray-100"
+              activeTab === "Orders"
+                ? "bg-blue-500 text-white shadow-lg"
+                : "text-gray-700 hover:bg-gray-100"
             }`}
           >
             Orders
@@ -55,7 +58,9 @@ function Admin() {
           <button
             onClick={() => setActiveTab("Customers")}
             className={`py-2 px-6 rounded-md font-medium text-lg transition-all duration-300 ${
-              activeTab === "Customers" ? "bg-blue-500 text-white shadow-lg" : "text-gray-700 hover:bg-gray-100"
+              activeTab === "Customers"
+                ? "bg-blue-500 text-white shadow-lg"
+                : "text-gray-700 hover:bg-gray-100"
             }`}
           >
             Customers
@@ -65,7 +70,7 @@ function Admin() {
         <div className="max-w-6xl mx-auto">
           {activeTab === "Overview" && <AdminOverview />}
           {activeTab === "Products" && <ProductManagement />}
-          {activeTab === "Orders" && <OrderTrackingAdmin />} 
+          {activeTab === "Orders" && <OrderTrackingAdmin />}
           {activeTab === "Customers" && <UserProfileManagement />}
         </div>
       </div>

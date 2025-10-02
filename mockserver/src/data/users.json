@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "id": "2",
+      "id": "3",
       "email": "seller@example.com",
       "name": "Seller",
       "password": "seller123",
@@ -9,7 +9,7 @@
     },
     
     {
-      "id": "3",
+      "id": "2",
       "name": "Saurabh",
       "phone": "08530274378",
       "email": "saurabh@gmail.com",

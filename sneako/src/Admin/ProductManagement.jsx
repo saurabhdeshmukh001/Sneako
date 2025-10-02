@@ -1,4 +1,3 @@
-// pages/ProductManagement.jsx (Beautified with increased gap)
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -62,6 +61,7 @@ const ProductManagement = () => {
         <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 sm:mb-8 border-b pb-2 sm:pb-3">
           Product Catalog <FiPackage className="inline text-indigo-600 mb-1" />
         </h1>
+    
 
         {successMessage && (
           <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-xl z-50 flex items-center space-x-2 sm:space-x-3 transition duration-300 text-xs sm:text-base">
