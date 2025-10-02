@@ -54,14 +54,12 @@ function Login() {
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      {/* Success Popup */}
       {success && (
         <div className="fixed top-8 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg font-semibold">
           Login Successfull!
         </div>
       )}  
 
-      {/* Video Background */}
       <video
         autoPlay
         loop
@@ -73,12 +71,10 @@ function Login() {
         Your browser does not support the video tag.
       </video>
 
-      {/* Overlay to decrease video opacity */}
       <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
 
       <Navbar></Navbar>
 
-      {/* Login Card */}
       <div className="relative flex items-center justify-center h-screen z-10">
         <div className="bg-black/40 backdrop-blur-md shadow-2xl rounded-2xl p-8 w-full max-w-sm text-white">
           <h2 className="text-3xl font-bold text-center mb-6">Login</h2>
@@ -88,7 +84,6 @@ function Login() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Role Dropdown */}
             <div>
               <label className="block mb-2 font-medium">Select Role</label>
               <select
@@ -105,7 +100,6 @@ function Login() {
               </select>
             </div>
 
-            {/* Name */}
             <div>
               <label className="block mb-2 font-medium">Name</label>
               <input
@@ -118,7 +112,6 @@ function Login() {
               />
             </div>
 
-            {/* Password */}
             <div>
               <label className="block mb-2 font-medium">PASSWORD</label>
               <input
@@ -131,7 +124,6 @@ function Login() {
               />
             </div>
 
-            {/* Submit */}
             <button
               type="submit"
               className="w-full bg-red-600 text-white font-semibold py-2 rounded-lg hover:bg-red-700 transition"
@@ -140,7 +132,6 @@ function Login() {
             </button>
           </form>
 
-          {/* Extra Links */}
           {role === "customer" && (
             <p className="text-center text-gray-300 mt-6">
               Don’t have an account?{" "}

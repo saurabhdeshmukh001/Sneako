@@ -216,7 +216,6 @@ const AdminOverview = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [totalCustomers, setTotalCustomers] = useState(0);
 
-  // --- useEffect Hook for data fetching ---
   useEffect(() => {
     const fetchData = async () => {
       try {

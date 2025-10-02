@@ -1,9 +1,7 @@
-// pages/Profile.jsx
 import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import ProfileInformation from "./ProfileInformation";
-// Import the new component for orders
 import CustomerOrderDetails from "./CustomerOrderDetails"; 
 import { fetchUsers, fetchOrders, fetchUserAddresses } from "../api/api";
 
@@ -99,7 +97,6 @@ function Profile() {
                         </button>
                     </div>
 
-                    {/* Content based on active tab */}
                     <div className="bg-white p-8 rounded-lg shadow-md">
                         {activeTab === "Profile" && <ProfileInformation />}
                         {activeTab === "Orders" && <CustomerOrderDetails />} 

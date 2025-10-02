@@ -63,7 +63,6 @@ const ProductManagement = () => {
           Product Catalog <FiPackage className="inline text-indigo-600 mb-1" />
         </h1>
 
-        {/* Success Message Alert (Centered and prominent) */}
         {successMessage && (
           <div className="fixed top-5 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg shadow-xl z-50 flex items-center space-x-2 sm:space-x-3 transition duration-300 text-xs sm:text-base">
             <span>{successMessage}</span>
@@ -76,7 +75,6 @@ const ProductManagement = () => {
           </div>
         )}
 
-        {/* Header & Actions */}
         <div className="flex flex-col sm:flex-row justify-end mb-4 sm:mb-6 gap-2 sm:gap-0">
           <button
             onClick={() => navigate("/add-product")}
@@ -86,7 +84,6 @@ const ProductManagement = () => {
           </button>
         </div>
 
-        {/* Products Table Card */}
         <div className="bg-white rounded-xl shadow-lg overflow-x-auto border border-gray-100">
           <table className="min-w-full divide-y divide-gray-200 text-xs sm:text-sm">
             <thead className="bg-gray-50">

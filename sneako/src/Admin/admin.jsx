@@ -14,7 +14,7 @@ function Admin() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("Overview");
 
-  // Authentication check (optional, but good practice)
+
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
     if (!storedUser || storedUser.role !== 'seller') {
@@ -65,7 +65,7 @@ function Admin() {
         <div className="max-w-6xl mx-auto">
           {activeTab === "Overview" && <AdminOverview />}
           {activeTab === "Products" && <ProductManagement />}
-          {activeTab === "Orders" && <OrderTrackingAdmin />} {/* Render the new component here */}
+          {activeTab === "Orders" && <OrderTrackingAdmin />} 
           {activeTab === "Customers" && <UserProfileManagement />}
         </div>
       </div>

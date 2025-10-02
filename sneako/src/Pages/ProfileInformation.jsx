@@ -60,7 +60,7 @@ function ProfileInformation() {
 
   try {
     const updatedData = {
-      id: user.id, // include user id in request body
+      id: user.id, 
       name: formData.name,
       phone: formData.phone,
       email: formData.email,
@@ -68,13 +68,12 @@ function ProfileInformation() {
     };
 
     const response = await axios.put(
-      `http://localhost:3000/api/v1/users/${user.id}`, // use id from localStorage
+      `http://localhost:3000/api/v1/users/${user.id}`, 
       updatedData
     );
 
     console.log(response);
 
-    // keep local id always
     const updatedUser = {
       ...response.data,
       id: user.id,
@@ -130,7 +129,6 @@ function ProfileInformation() {
             onClick={() => setIsEditing(true)}
             className="flex items-center text-blue-600 hover:text-blue-800 font-medium transition text-sm sm:text-base"
           >
-            {/* Using a simple SVG icon as an alternative to react-feather */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -151,11 +149,9 @@ function ProfileInformation() {
       </div>
 
       {!isEditing ? (
-        // View Mode
         <div>
           <div className="flex flex-col sm:flex-row items-center mb-4 sm:mb-6">
             <div className="bg-blue-100 text-blue-500 p-3 sm:p-4 rounded-full mr-0 sm:mr-4 mb-2 sm:mb-0">
-              {/* Using a simple SVG icon for the user avatar */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="36" height="36" sm:width="48" sm:height="48"

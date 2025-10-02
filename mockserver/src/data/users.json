@@ -7,13 +7,14 @@
       "password": "seller123",
       "role": "seller"
     },
+    
     {
       "id": "3",
-      "name": "harsh",
-      "phone": "08530472854",
-      "email": "h@gmail.com",
+      "name": "Saurabh",
+      "phone": "08530274378",
+      "email": "saurabh@gmail.com",
       "password": "12345",
-      "address": "xyz",
+      "address": "CBE CHIL - SEZ -FO,Special Economic Zone, Saravanampatti VIA, Coimbatore North Tal, Keeranatham Village",
       "role": "customer"
     }
   ]

@@ -1,9 +1,8 @@
-// pages/AddProduct.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { FiX, FiArrowLeft, FiPlusSquare } from 'react-icons/fi'; // Icons for professional look
+import { FiX, FiArrowLeft, FiPlusSquare } from 'react-icons/fi'; 
 import axios from "axios";
 
 function AddProduct() {
@@ -13,9 +12,9 @@ function AddProduct() {
         description: "",
         category: "Sport Shoes",
         image: "",
-        stock: "" // Added stock field
+        stock: "" 
     });
-    const [loading, setLoading] = useState(false); // FIX 1: Add loading state
+    const [loading, setLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -26,9 +25,8 @@ function AddProduct() {
         setProduct((prev) => ({ ...prev, [name]: value }));
     };
     
-    // Handle "Back" button click to navigate back to the product management page
     const handleGoBack = () => {
-        navigate("/admin"); // FIX 2: Correct navigation path
+        navigate("/admin");
     };
 
     const handleSubmit = async (e) => {
