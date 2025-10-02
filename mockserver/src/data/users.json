@@ -6,7 +6,16 @@
       "name": "Seller",
       "password": "seller123",
       "role": "seller",
-      "address": "dfv"
+      "address": "kgx"
+    },
+    {
+      "id": "2",
+      "name": "saurabh",
+      "phone": "9284672854",
+      "email": "s@gmail.com",
+      "password": "12345",
+      "address": "kailash pg",
+      "role": "customer"
     }
   ]
 }

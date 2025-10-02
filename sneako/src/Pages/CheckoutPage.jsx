@@ -80,6 +80,21 @@ function CheckoutPage() {
             const orderResponse = await axios.post("http://localhost:3000/api/v1/orders", newOrder);
             const orderId = orderResponse.data.id;
 
+            // Decrease product stock
+            await Promise.all(itemsToOrder.map(async (item) => {
+                try {
+                    const productRes = await axios.get(`http://localhost:3000/api/v1/products/${item.productId}`);
+                    const product = productRes.data;
+                    const newStock = (product.stock || 0) - (item.quantity || 1);
+                    await axios.put(`http://localhost:3000/api/v1/products/${item.productId}`, {
+                        ...product,
+                        stock: newStock < 0 ? 0 : newStock
+                    });
+                } catch (err) {
+                    console.error(`Failed to update stock for product ${item.productId}:`, err);
+                }
+            }));
+
             if (cartItems) {
                 await Promise.all(cartItems.map(item => axios.delete(`http://localhost:3000/api/v1/cart/${item.id}`)));
             }
