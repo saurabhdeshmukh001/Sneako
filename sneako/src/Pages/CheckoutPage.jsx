@@ -15,7 +15,6 @@ function CheckoutPage() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    // price calculation
     const itemsToDisplay = product ? [{ 
         ...product, 
         quantity: location.state?.quantity || 1,
@@ -34,8 +33,6 @@ function CheckoutPage() {
         quantity: item.quantity || 1,
         size: item.size || 'N/A'
     }));
-
-    // order placement
 
     const handlePlaceOrder = async (e) => {
         e.preventDefault();
@@ -130,10 +127,8 @@ function CheckoutPage() {
 
                 {itemsToDisplay.length > 0 && (
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-                        {/* form */}
                         <div className="lg:col-span-2 space-y-8">
                             <form onSubmit={handlePlaceOrder}>
-                                {/* shipping */}
                                 <div className="p-6 bg-white border border-gray-200 rounded-xl shadow-md">
                                     <h2 className="text-2xl font-bold mb-6 text-black">1. Shipping Information 🚚</h2>
                                     <div className="mb-4">
@@ -151,7 +146,6 @@ function CheckoutPage() {
                                     <p className="text-sm text-gray-500">Your address will be securely saved for future orders.</p>
                                 </div>
                                 
-                                {/* payment */}
                                 <div className="mt-8 p-6 bg-white border border-gray-200 rounded-xl shadow-md">
                                     <h2 className="text-2xl font-bold mb-6 text-black">2. Payment Method 💳</h2>
                                     <div className="space-y-3">
@@ -194,7 +188,6 @@ function CheckoutPage() {
                             </form>
                         </div>
                         
-                        {/* order summary */}
                         <div className="lg:col-span-1 bg-gray-50 p-6 rounded-xl shadow-lg h-fit sticky top-10">
                             <h2 className="text-2xl font-bold mb-6 border-b pb-3 text-gray-900">Order Summary</h2>
                             
@@ -214,8 +207,7 @@ function CheckoutPage() {
                                     </div>
                                 ))}
                             </div>
-                            
-                            {/* pricing */}
+
                             <div className="space-y-2 border-t pt-4">
                                 <div className="flex justify-between text-base text-gray-700">
                                     <span>Subtotal</span>
