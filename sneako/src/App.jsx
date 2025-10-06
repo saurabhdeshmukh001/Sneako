@@ -1,4 +1,3 @@
-// App.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AddProduct from "./Admin/AddProduct";
 import UpdateProduct from "./Admin/UpdateProduct";
