@@ -17,7 +17,7 @@ function Login() {
     setError("");
 
     try {
-      // Use axios and send name and password
+      // Used axios and send name and password
       const response = await axios.post(
         "http://localhost:3000/api/v1/auth/login",
         {

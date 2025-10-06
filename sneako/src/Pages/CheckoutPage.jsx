@@ -80,7 +80,6 @@ function CheckoutPage() {
             const orderResponse = await axios.post("http://localhost:3000/api/v1/orders", newOrder);
             const orderId = orderResponse.data.id;
 
-            // Decrease product stock
             await Promise.all(itemsToOrder.map(async (item) => {
                 try {
                     const productRes = await axios.get(`http://localhost:3000/api/v1/products/${item.productId}`);
