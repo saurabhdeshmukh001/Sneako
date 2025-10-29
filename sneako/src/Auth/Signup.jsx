@@ -11,6 +11,7 @@ function Signup() {
   const [address, setAddress] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [selectedRole, setSelectedRole] = useState("ROLE_CUSTOMER");
   const [error, setError] = useState("");
   const [greet, setGreet] = useState(false);
   const navigate = useNavigate();
@@ -30,26 +31,27 @@ function Signup() {
     }
 
     const newUser = {
-      name,
+      username: name,
       phone,
       email,
       address,
       password,
-      role: "customer",
+      roleType: selectedRole,
     };
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/v1/auth/register",
+        "http://localhost:8085/api/v1/userservice/register",
         newUser
       );
       localStorage.setItem("user", JSON.stringify(response.data));
       setError("");
       setGreet(true);
-      setTimeout(() => {
-        setGreet(false);
-        navigate("/home");
-      }, 1500);
+    setTimeout(() => {
+  setGreet(false);
+  navigate("/login");
+}, 1500);
+
     } catch (err) {
       console.log("Signup error:", err.response);
       setError(
@@ -62,7 +64,7 @@ function Signup() {
     <div className="relative h-screen w-full overflow-hidden">
       {greet && (
         <div className="fixed top-8 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg font-semibold">
-           Signup Successfull!
+          Signup Successful!
         </div>
       )}
 
@@ -79,13 +81,11 @@ function Signup() {
 
       <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
 
-      <Navbar></Navbar>
+      <Navbar />
 
       <div className="relative flex items-center justify-center min-h-screen z-10 px-2">
-        <div className="bg-black/40 backdrop-blur-md shadow-2xl rounded-2xl p-2 w-full max-w-[420px] md:max-w-[468px] min-h-[450px] text-white flex flex-col">
-          <h2 className="text-xl font-bold text-center mb-2">
-            Customer Sign Up
-          </h2>
+        <div className="bg-black/40 backdrop-blur-md shadow-2xl rounded-2xl p-2 w-full max-w-[420px] md:max-w-[468px] min-h-[500px] text-white flex flex-col">
+          <h2 className="text-xl font-bold text-center mb-2">Sign Up</h2>
 
           {error && (
             <p className="text-red-400 text-center mb-2 font-medium">{error}</p>
@@ -159,7 +159,19 @@ function Signup() {
                   required
                 />
               </div>
+              <div className="md:col-span-2">
+                <label className="block mb-1 font-medium">Select Role</label>
+                <select
+                  value={selectedRole}
+                  onChange={(e) => setSelectedRole(e.target.value)}
+                  className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
+                >
+                  <option value="ROLE_CUSTOMER" className="text-black">Customer</option>
+                  <option value="ROLE_ADMIN" className="text-black">Admin</option>
+                </select>
+              </div>
             </div>
+
             <button
               type="submit"
               className="w-full bg-red-600 text-white font-semibold py-1.5 rounded-lg hover:bg-red-700 transition mt-2"
@@ -179,7 +191,8 @@ function Signup() {
           </p>
         </div>
       </div>
-      <Footer></Footer>
+
+      <Footer />
     </div>
   );
 }

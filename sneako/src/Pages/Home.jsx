@@ -2,25 +2,44 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import axios from "axios";
-import ProductCard from "./productCard";
+import ProductCard from "./ProductCard";
 import Carousel from "../components/Carousel";
 import Footer from "../components/Footer";
 
 function Home() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [success, setSuccess] = useState(false);
 
+  // Pagination state
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user?.jwt;
+
     axios
-      .get("http://localhost:3000/api/v1/products")
-      .then((response) => setProducts(response.data))
-      .catch((err) => console.error("Error fetching products:", err));
-  }, []);
+      .get(`http://localhost:8085/api/v1/products?page=${page}&size=${size}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setProducts(response.data.content || []);
+        setTotalPages(response.data.totalPages);
+      })
+      .catch((err) => {
+        console.error("Error fetching products:", err);
+        if (err.response?.status === 401) {
+          navigate("/login");
+        }
+      });
+  }, [page, size]);
 
   useEffect(() => {
     const handleCategorySelect = (e) => {
@@ -43,14 +62,14 @@ function Home() {
     let filtered = products;
 
     if (selectedCategory && selectedCategory !== "All") {
-      filtered = filtered.filter((p) => p.category === selectedCategory);
+      filtered = filtered.filter((p) => p.categoryName === selectedCategory);
     }
 
     if (searchQuery && searchQuery.trim() !== "") {
       const lowerSearch = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (p) =>
-          p.name.toLowerCase().includes(lowerSearch) ||
+          p.productName.toLowerCase().includes(lowerSearch) ||
           (p.description && p.description.toLowerCase().includes(lowerSearch))
       );
     }
@@ -58,7 +77,6 @@ function Home() {
     setFilteredProducts(filtered);
   }, [products, selectedCategory, searchQuery]);
 
-  // --- New Section: Banner Component (Inline for Simplicity) ---
   const PromotionBanner = () => (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center bg-gray-900 text-white my-10 rounded-xl shadow-2xl">
       <h2 className="text-3xl sm:text-4xl font-extrabold mb-3">
@@ -69,7 +87,10 @@ function Home() {
         fresh street style.
       </p>
       <button
-        onClick={() => {setSuccess(true) ; setTimeout(() => setSuccess(false), 2000);}}
+        onClick={() => {
+          setSuccess(true);
+          setTimeout(() => setSuccess(false), 2000);
+        }}
         className="bg-red-600 text-white font-bold py-3 px-8 rounded-lg text-lg hover:bg-red-700 transition duration-300 transform hover:scale-105"
       >
         Explore Promotions
@@ -96,22 +117,53 @@ function Home() {
     );
   };
 
+  const PaginationControls = () => (
+    <div className="flex justify-center mt-8 space-x-2">
+      <button
+        disabled={page === 0}
+        onClick={() => setPage(page - 1)}
+        className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+      >
+        Previous
+      </button>
+
+      {[...Array(totalPages)].map((_, i) => (
+        <button
+          key={i}
+          onClick={() => setPage(i)}
+          className={`px-4 py-2 rounded ${
+            i === page ? "bg-red-600 text-white" : "bg-gray-200 hover:bg-gray-300"
+          }`}
+        >
+          {i + 1}
+        </button>
+      ))}
+
+      <button
+        disabled={page === totalPages - 1}
+        onClick={() => setPage(page + 1)}
+        className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 disabled:opacity-50"
+      >
+        Next
+      </button>
+    </div>
+  );
+
   return (
     <div className="bg-gray-50 min-h-screen w-full overflow-x-hidden">
       <Navbar />
       {success && (
         <div className="fixed top-8 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg font-semibold">
-         This feature will be available soon!
-        </div>
-      )} 
-
-      {(!searchQuery || searchQuery.trim() === "") && (
-        <div className="w-full">
-          <Carousel />
+          This feature will be available soon!
         </div>
       )}
 
-      {(!searchQuery || searchQuery.trim() === "") && <PromotionBanner />}
+      {(!searchQuery || searchQuery.trim() === "") && (
+        <>
+          <Carousel />
+          <PromotionBanner />
+        </>
+      )}
 
       <ProductGridHeader />
 
@@ -123,11 +175,14 @@ function Home() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
-            {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
+              {filteredProducts.map((product) => (
+                <ProductCard key={product.productID} product={product} />
+              ))}
+            </div>
+            <PaginationControls />
+          </>
         )}
       </div>
       <Footer />

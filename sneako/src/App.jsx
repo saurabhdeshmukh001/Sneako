@@ -85,7 +85,7 @@ function App() {
         <Route
           path="/admin"
           element={
-            <ProtectedRoute allowedRoles={["seller"]}>
+            <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
               <Admin />
             </ProtectedRoute>
           }
@@ -93,7 +93,7 @@ function App() {
         <Route
           path="/add-product"
           element={
-            <ProtectedRoute allowedRoles={["seller"]}>
+            <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
               <AddProduct />
             </ProtectedRoute>
           }
@@ -101,7 +101,7 @@ function App() {
         <Route
           path="/manage-products"
           element={
-            <ProtectedRoute allowedRoles={["seller"]}>
+            <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
               <ProductManagement />
             </ProtectedRoute>
           }
@@ -109,7 +109,7 @@ function App() {
         <Route
           path="/edit-product/:id"
           element={
-            <ProtectedRoute allowedRoles={["seller"]}>
+            <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
               <UpdateProduct />
             </ProtectedRoute>
           }
@@ -117,7 +117,7 @@ function App() {
         <Route
           path="/manage-users"
           element={
-            <ProtectedRoute allowedRoles={["seller"]}>
+            <ProtectedRoute allowedRoles={["ROLE_ADMIN"]}>
               <UserProfileManagement />
             </ProtectedRoute>
           }

@@ -1,33 +1,40 @@
-
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { FiX, FiArrowLeft, FiEdit3 } from "react-icons/fi"; 
+import { FiX, FiArrowLeft, FiEdit3 } from "react-icons/fi";
 
 const UpdateProduct = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const [product, setProduct] = useState({
-    name: "",
-    category: "",
+    productName: "",
+    categoryName: "",
     price: "",
-    stock: 0,
-    description: "", 
-    image: "", 
+    stockQuantity: 0,
+    description: "",
+    imageUrl: "",
   });
   const [loading, setLoading] = useState(true);
   const [successMessage, setSuccessMessage] = useState("");
 
-  // Fetch product details by ID
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user?.jwt;
+
     const loadProduct = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/v1/products/${id}`
+          `http://localhost:8085/api/v1/admin/product/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
+        console.log("Fetched product:", response.data);
         setProduct(response.data);
         setLoading(false);
       } catch (error) {
@@ -38,26 +45,33 @@ const UpdateProduct = () => {
     loadProduct();
   }, [id]);
 
-  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct((prev) => ({ ...prev, [name]: value }));
   };
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-    
+      const user = JSON.parse(localStorage.getItem("user"));
+      const token = user?.jwt;
+
       const updatedProduct = {
         ...product,
         price: Number(product.price),
-        stock: Number(product.stock),
+        stockQuantity: Number(product.stockQuantity),
       };
+
       const response = await axios.put(
-        `http://localhost:3000/api/v1/products/${id}`,
-        updatedProduct
+        `http://localhost:8085/api/v1/admin/product/${id}`,
+        updatedProduct,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
+
       if (response.status !== 200) throw new Error("Failed to update product");
       setSuccessMessage("Product updated successfully!");
       setTimeout(() => {
@@ -111,7 +125,6 @@ const UpdateProduct = () => {
               <button
                 onClick={handleGoBack}
                 className="flex items-center text-gray-600 hover:text-gray-900 transition duration-300"
-                aria-label="Go back to Product Management"
               >
                 <FiArrowLeft className="mr-2" /> Back
               </button>
@@ -124,8 +137,8 @@ const UpdateProduct = () => {
                 </label>
                 <input
                   type="text"
-                  name="name"
-                  value={product.name}
+                  name="productName"
+                  value={product.productName}
                   onChange={handleChange}
                   className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
                   required
@@ -138,8 +151,8 @@ const UpdateProduct = () => {
                 </label>
                 <input
                   type="text"
-                  name="category"
-                  value={product.category}
+                  name="categoryName"
+                  value={product.categoryName}
                   onChange={handleChange}
                   className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
                   required
@@ -162,12 +175,12 @@ const UpdateProduct = () => {
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Stock
+                  Stock Quantity
                 </label>
                 <input
                   type="number"
-                  name="stock"
-                  value={product.stock}
+                  name="stockQuantity"
+                  value={product.stockQuantity}
                   onChange={handleChange}
                   min="0"
                   className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
@@ -195,8 +208,8 @@ const UpdateProduct = () => {
                 </label>
                 <input
                   type="text"
-                  name="image"
-                  value={product.image}
+                  name="imageUrl"
+                  value={product.imageUrl}
                   onChange={handleChange}
                   className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 transition"
                   placeholder="e.g., https://images.unsplash.com/..."

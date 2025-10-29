@@ -2,112 +2,120 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 
 function CheckoutPage() {
-    const navigate = useNavigate();
-    const location = useLocation();
-    
-    const { product, cartItems, total } = location.state || {}; 
+  const navigate = useNavigate();
+  const location = useLocation();
 
-    const [address, setAddress] = useState('');
-    const [paymentType, setPaymentType] = useState('Card');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+  const { product, cartItems, total } = location.state || {};
 
-    // price calculation
-    const itemsToDisplay = product ? [{ 
-        ...product, 
-        quantity: location.state?.quantity || 1,
-        totalPrice: product.price * (location.state?.quantity || 1) 
-    }] : cartItems;
-    
-    const subTotal = total || (product ? product.price * (location.state?.quantity || 1) : 0);
-    
-    const SHIPPING_COST = subTotal > 5000 ? 0 : 250;
-    const finalTotal = subTotal + SHIPPING_COST;
+  const [address, setAddress] = useState('');
+  const [paymentType, setPaymentType] = useState('UPI');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-    const itemsToOrder = (itemsToDisplay || []).map(item => ({
-        productId: item.productId || item.id,
-        name: item.name,
-        price: item.originalPrice || item.price,
-        quantity: item.quantity || 1,
-        size: item.size || 'N/A'
-    }));
+  const itemsToDisplay = product
+  ? [{
+      productId: product.id,
+      name: product.productName,
+      quantity: location.state?.quantity || 1,
+      size: location.state?.size || 10,
+      unitPrice: product.price,
+      totalPrice: product.price * (location.state?.quantity || 1)
+    }]
+  : cartItems;
 
-    // order placement
+  const subTotal = total || (product ? product.price * (location.state?.quantity || 1) : 0);
+  const SHIPPING_COST = subTotal > 5000 ? 0 : 250;
+  const finalTotal = subTotal + SHIPPING_COST;
 
-    const handlePlaceOrder = async (e) => {
-        e.preventDefault();
+  const handlePlaceOrder = async (e) => {
+    e.preventDefault();
 
-        if (!itemsToOrder.length) {
-            setError('No items to order. Please go back and add items.');
-            return;
+    if (!itemsToDisplay || itemsToDisplay.length === 0) {
+      setError('No items to order. Please go back and add items.');
+      return;
+    }
+
+    if (!address.trim()) {
+      setError('Please enter a valid shipping address.');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const user = JSON.parse(localStorage.getItem('user'));
+      const token = user?.jwt;
+
+      if (!user?.id || !token) {
+        setError('User not logged in. Please log in to place an order.');
+        setLoading(false);
+        return;
+      }
+
+      // 1️⃣ Construct OrderDTO
+    const orderPayload = {
+  userId: user.id,
+  shippingAddress: address,
+  orderStatus: "Confirmed",
+  orderDate: new Date().toISOString(),
+  orderItems: itemsToDisplay.map(item => ({
+    productId: item.productId,
+    quantity: item.quantity,
+    unitPrice: item.unitPrice,
+    totalPrice: item.totalPrice,
+    size: item.size
+  }))
+};
+
+
+
+      // 2️⃣ Create Order
+      const orderRes = await axios.post("http://localhost:8085/api/v1/orders", orderPayload, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-        if (!address.trim()) {
-             setError('Please enter a valid shipping address.');
-             return;
+      });
+
+      const order = orderRes.data;
+
+      // 3️⃣ Create Payment
+      await axios.post("http://localhost:8085/api/v1/payment", {
+        orderId: order.orderId,
+        transactionId: `TXN-${Date.now()}`,
+        paymentMethod: paymentType,
+        paymentDate: new Date().toISOString().split("T")[0]
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
+      });
+      // 🧹 Clear cart if this was a cart-based order
+if (!product && cartItems?.length > 0) {
+  await Promise.all(
+    cartItems.map(item =>
+      axios.delete(`http://localhost:8085/api/v1/cart-items/${item.cartItemId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+    )
+  );
+}
 
-        setLoading(true);
-        setError('');
+      
 
-        try {
-            const user = JSON.parse(localStorage.getItem('user'));
-            const userId = user && user.id ? String(user.id) : null;
-            if (!userId) {
-                setError('User not logged in. Please log in to place an order.');
-                setLoading(false);
-                return;
-            }
+      // 4️⃣ Redirect to confirmation
+      navigate(`/order-confirmation/${order.orderId}`, { state: { order } });
 
-            const userRes = await axios.get(`http://localhost:3000/api/v1/users/${userId}`);
-            const existingUser = userRes.data;
-            const updatedUser = { ...existingUser, address };
-            await axios.put(`http://localhost:3000/api/v1/users/${userId}`, updatedUser);
+    } catch (err) {
+      console.error("Error placing order:", err.response?.data || err.message);
+      setError('Failed to place order. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            const newOrder = {
-                userId,
-                products: itemsToOrder,
-                totalPrice: finalTotal,
-                shippingAddress: address,
-                paymentMethod: paymentType,
-                status: 'Processing',
-                orderDate: new Date().toISOString(),
-                trackingNumber: `TRACK-${Math.floor(Math.random() * 1000000)}`
-            };
-
-            const orderResponse = await axios.post("http://localhost:3000/api/v1/orders", newOrder);
-            const orderId = orderResponse.data.id;
-
-            // Decrease product stock
-            await Promise.all(itemsToOrder.map(async (item) => {
-                try {
-                    const productRes = await axios.get(`http://localhost:3000/api/v1/products/${item.productId}`);
-                    const product = productRes.data;
-                    const newStock = (product.stock || 0) - (item.quantity || 1);
-                    await axios.put(`http://localhost:3000/api/v1/products/${item.productId}`, {
-                        ...product,
-                        stock: newStock < 0 ? 0 : newStock
-                    });
-                } catch (err) {
-                    console.error(`Failed to update stock for product ${item.productId}:`, err);
-                }
-            }));
-
-            if (cartItems) {
-                await Promise.all(cartItems.map(item => axios.delete(`http://localhost:3000/api/v1/cart/${item.id}`)));
-            }
-
-            navigate(`/order-confirmation/${orderId}`, { state: { order: orderResponse.data } });
-
-        } catch (err) {
-            console.error("Error placing order:", err);
-            setError('Failed to place order. Please try again.');
-        } finally {
-            setLoading(false);
-        }
-    };
     
     return (
         <div>

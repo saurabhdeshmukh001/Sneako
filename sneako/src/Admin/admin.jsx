@@ -14,7 +14,7 @@ function Admin() {
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (!storedUser || storedUser.role !== "seller") {
+    if (!storedUser || storedUser.role !== "ROLE_ADMIN") {
       navigate("/login");
     }
   }, [navigate]);

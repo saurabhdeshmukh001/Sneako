@@ -10,15 +10,59 @@ function Cart() {
   const [total, setTotal] = useState(0);
   const [lastUpdatedItemId, setLastUpdatedItemId] = useState(null);
 
+ 
+
+  // ✅ Move fetchItems here
+  const fetchItems = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const userId = user.id;
+    const token = user.jwt;
+
+    try {
+      const res = await axios.get(
+        `http://localhost:8085/api/v1/carts/user/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const cart = res.data;
+
+      const enrichedItems = await Promise.all(
+        cart.cartItems.map(async (item) => {
+          try {
+            const productRes = await axios.get(
+              `http://localhost:8085/api/v1/products/${item.productId}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
+            );
+            const product = productRes.data;
+            return {
+              ...item,
+              name: product.productName,
+              image: product.imageUrl,
+              category: product.categoryName,
+              originalPrice: product.price,
+            };
+          } catch (err) {
+            console.error("Error fetching product for cart item:", err);
+            return item;
+          }
+        })
+      );
+
+      setCartItems(enrichedItems);
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  };
+
+  // ✅ Now this works
   useEffect(() => {
-    const fetchItems = async () => {
-      try {
-        const res = await axios.get("http://localhost:3000/api/v1/cart");
-        setCartItems(res.data);
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
     fetchItems();
   }, []);
 
@@ -31,72 +75,95 @@ function Cart() {
     if (lastUpdatedItemId) {
       const timer = setTimeout(() => {
         setLastUpdatedItemId(null);
-      }, 500); 
+      }, 500);
       return () => clearTimeout(timer);
     }
   }, [lastUpdatedItemId]);
 
+  const updateCartItemQuantity = async (cartItemId, newQuantity) => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.jwt;
+  const itemToUpdate = cartItems.find(item => item.cartItemId === cartItemId);
+  if (!itemToUpdate || newQuantity < 1) return;
 
-  const updateCartItemQuantity = async (id, newQuantity) => {
-    const itemToUpdate = cartItems.find((item) => item.id === id);
-    if (!itemToUpdate || newQuantity < 1) return;
+  try {
+    await axios.patch("http://localhost:8085/api/v1/cart-items", {
+      cartItemId,
+      productId: itemToUpdate.productId,
+      quantity: newQuantity,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    const newTotalPrice = itemToUpdate.originalPrice * newQuantity;
+    // Optionally re-fetch cart to sync
+    fetchItems(); // if fetchItems is accessible here
+  } catch (error) {
+    console.error("Error updating item quantity:", error);
+  }
+};
 
-    try {
-     
-      await axios.put(`http://localhost:3000/api/v1/cart/${id}`, {
-        ...itemToUpdate,
-        quantity: newQuantity,
-        totalPrice: newTotalPrice,
-      });
 
-      setCartItems(
-        cartItems.map((item) =>
-          item.id === id
-            ? { ...item, quantity: newQuantity, totalPrice: newTotalPrice }
-            : item
-        )
-      );
-      setLastUpdatedItemId(id); 
-    } catch (error) {
-      console.error("Error updating item quantity:", error);
-    }
-  };
-
-  const handleIncrement = (id) => {
-    const item = cartItems.find((item) => item.id === id);
+  const handleIncrement = (cartItemId) => {
+    const item = cartItems.find((item) => item.cartItemId === cartItemId);
     if (item) {
-      updateCartItemQuantity(id, item.quantity + 1);
+      updateCartItemQuantity(cartItemId, item.quantity + 1);
     }
   };
 
-  const handleDecrement = (id) => {
-    const item = cartItems.find((item) => item.id === id);
+  const handleDecrement = (cartItemId) => {
+    const item = cartItems.find((item) => item.cartItemId === cartItemId);
     if (item) {
       if (item.quantity === 1) {
-        handleRemoveFromCart(id);
+        handleRemoveFromCart(cartItemId);
       } else {
-        updateCartItemQuantity(id, item.quantity - 1);
+        updateCartItemQuantity(cartItemId, item.quantity - 1);
       }
     }
   };
 
-  const handleRemoveFromCart = async (idToRemove) => {
+  const handleRemoveFromCart = async (cartItemIdToRemove) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user.jwt;
     try {
-      await axios.delete(`http://localhost:3000/api/v1/cart/${idToRemove}`);
+      await axios.delete(
+        `http://localhost:8085/api/v1/cart-items/${cartItemIdToRemove}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      setCartItems(cartItems.filter((item) => item.id !== idToRemove));
+      setCartItems(
+        cartItems.filter((item) => item.cartItemId !== cartItemIdToRemove)
+      );
     } catch (error) {
       console.error("Error removing item from cart:", error);
     }
   };
 
-  const handlePlaceOrder = () => {
-    if (cartItems.length > 0) {
-      navigate("/checkout", { state: { cartItems, total: total } });
-    }
-  };
+const handlePlaceOrder = () => {
+  if (cartItems.length > 0) {
+    const enrichedItems = cartItems.map(item => ({
+      cartItemId: item.cartItemId, // ✅ needed for deletion
+      productId: item.productId,
+      quantity: item.quantity,
+      unitPrice: item.originalPrice,
+      totalPrice: item.originalPrice * item.quantity,
+      size: item.size || 10,
+      name: item.name
+    }));
+
+    navigate("/checkout", {
+      state: {
+        cartItems: enrichedItems,
+        total: enrichedItems.reduce((sum, item) => sum + item.totalPrice, 0)
+      }
+    });
+  }
+};
 
 
   return (
@@ -128,12 +195,12 @@ function Cart() {
 
               {cartItems.map((item) => (
                 <div
-                  key={item.id}
-                  className={`flex flex-col sm:flex-row items-center border border-gray-200 rounded-xl shadow-md p-2 sm:p-4 relative 
+                  key={item.cartItemId}
+                  className={`flex flex-col sm:flex-row items-center border border-gray-200 rounded-xl shadow-md p-2 sm:p-4 relative
                                         ${
-                                          lastUpdatedItemId === item.id
-                                            ? "bg-green-50 transition-all duration-300 shadow-xl" 
-                                            : "bg-white transition duration-300 hover:shadow-lg" 
+                                          lastUpdatedItemId === item.cartItemId
+                                            ? "bg-green-50 transition-all duration-300 shadow-xl"
+                                            : "bg-white transition duration-300 hover:shadow-lg"
                                         }`}
                 >
                   <img
@@ -147,7 +214,9 @@ function Cart() {
                       {item.name}
                     </h3>
                     {item.size && (
-                      <p className="text-xs sm:text-sm text-gray-600">Size: {item.size}</p>
+                      <p className="text-xs sm:text-sm text-gray-600">
+                        Size: {item.size}
+                      </p>
                     )}
                     <p className="text-xs sm:text-sm text-gray-500">
                       Category: {item.category}
@@ -159,7 +228,7 @@ function Cart() {
 
                   <div className="flex items-center space-x-1 sm:space-x-2 border border-gray-300 rounded-lg p-1 mx-0 sm:mx-4 mt-2 sm:mt-0">
                     <button
-                      onClick={() => handleDecrement(item.id)}
+                      onClick={() => handleDecrement(item.cartItemId)}
                       className="text-gray-600 hover:text-black p-1 transition"
                     >
                       <FiMinus size={16} />
@@ -168,7 +237,7 @@ function Cart() {
                       {item.quantity}
                     </span>
                     <button
-                      onClick={() => handleIncrement(item.id)}
+                      onClick={() => handleIncrement(item.cartItemId)}
                       className="text-gray-600 hover:text-black p-1 transition"
                     >
                       <FiPlus size={16} />
@@ -181,7 +250,7 @@ function Cart() {
                       ₹{item.totalPrice.toLocaleString("en-IN")}
                     </p>
                     <button
-                      onClick={() => handleRemoveFromCart(item.id)}
+                      onClick={() => handleRemoveFromCart(item.cartItemId)}
                       className="text-xs sm:text-sm text-red-500 hover:text-red-700 font-medium transition flex items-center"
                     >
                       <FiTrash size={12} className="mr-1" /> Remove
@@ -198,7 +267,11 @@ function Cart() {
 
               <div className="space-y-3 sm:space-y-4">
                 <div className="flex justify-between text-base sm:text-lg text-gray-700">
-                  <span>Subtotal ({cartItems.length} items)</span>
+                  <span>
+             Subtotal (
+            {cartItems.reduce((sum, item) => sum + item.quantity, 0)} items)
+                    </span>
+
                   <span className="font-semibold">
                     ₹
                     {total.toLocaleString("en-IN", {

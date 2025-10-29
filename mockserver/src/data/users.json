@@ -1,13 +1,12 @@
 {
   "users": [
     {
-      "id": "3",
+      "id": "1",
       "email": "seller@example.com",
       "name": "Seller",
       "password": "seller123",
       "role": "seller"
     },
-    
     {
       "id": "2",
       "name": "Saurabh",
@@ -15,6 +14,24 @@
       "email": "saurabh@gmail.com",
       "password": "12345",
       "address": "CBE CHIL - SEZ -FO,Special Economic Zone, Saravanampatti VIA, Coimbatore North Tal, Keeranatham Village",
+      "role": "customer"
+    },
+    {
+      "id": "3",
+      "name": "harsh",
+      "phone": "08530472854",
+      "email": "h@gmail.com",
+      "password": "12345",
+      "address": "xyz",
+      "role": "customer"
+    },
+    {
+      "id": "4",
+      "name": "raja",
+      "phone": "9284573854",
+      "email": "raja@gmail.com",
+      "password": "1234567",
+      "address": "kailash",
       "role": "customer"
     }
   ]

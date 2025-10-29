@@ -14,10 +14,25 @@ function ProductDetails() {
   const availableSizes = [7, 8, 9, 10, 11, 12];
 
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user?.jwt;
+
     axios
-      .get(`http://localhost:3000/api/v1/products/${id}`)
+      .get(`http://localhost:8085/api/v1/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((res) => {
-        setProduct(res.data);
+        const dto = res.data;
+        setProduct({
+          id: dto.productID,
+          name: dto.productName,
+          image: dto.imageUrl,
+          category: dto.categoryName,
+          price: dto.price,
+          description: dto.description,
+        });
         setLoading(false);
       })
       .catch((err) => {
@@ -28,56 +43,40 @@ function ProductDetails() {
   }, [id]);
 
   const handleAddToCart = async () => {
-    if (!selectedSize) {
-      setMessage("Please select a size before adding to cart.");
-      setTimeout(() => setMessage(""), 3000);
-      return;
-    }
-    try {
-      // Fetch cart items
-      const cartRes = await axios.get("http://localhost:3000/api/v1/cart");
-      const cartItems = cartRes.data;
-      const existingCartItem = cartItems.find(
-        (item) => item.productId === product.id && item.size === selectedSize
-      );
-      if (existingCartItem) {
-        // Update existing item
-        const updatedItem = {
-          ...existingCartItem,
-          quantity: existingCartItem.quantity + 1,
-          totalPrice: existingCartItem.totalPrice + product.price,
-        };
-        await axios.put(
-          `http://localhost:3000/api/v1/cart/${existingCartItem.id}`,
-          updatedItem
-        );
-        setMessage(
-          `Quantity of ${product.name} (Size ${selectedSize}) updated in cart!`
-        );
-      } else {
-        // Add new item
-        const newCartItem = {
-          productId: product.id,
-          name: product.name,
-          image: product.image,
-          category: product.category,
-          size: selectedSize,
-          originalPrice: product.price,
-          totalPrice: product.price,
-          quantity: 1,
-        };
-        await axios.post("http://localhost:3000/api/v1/cart", newCartItem);
-        setMessage(`${product.name} (Size ${selectedSize}) added to cart!`);
+  if (!selectedSize) {
+    setMessage("Please select a size before adding to cart.");
+    setTimeout(() => setMessage(""), 3000);
+    return;
+  }
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.jwt;
+
+  try {
+    await axios.post(
+      "http://localhost:8085/api/v1/cart-items",
+      {
+        userId: user.id,
+        productId: product.id,
+        unitPrice: product.price,
+        quantity: 1,
+        size: selectedSize,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    } catch (err) {
-      console.error("Error adding to cart:", err);
-      setMessage("Failed to add item to cart.");
-    } finally {
-      setTimeout(() => {
-        setMessage("");
-      }, 3000);
-    }
-  };
+    );
+
+    setMessage(`${product.name} (Size ${selectedSize}) added to cart!`);
+  } catch (err) {
+    console.error("Error adding to cart:", err);
+    setMessage("Failed to add item to cart.");
+  } finally {
+    setTimeout(() => setMessage(""), 3000);
+  }
+};
 
   const handleBuyNow = () => {
     if (!selectedSize) {
@@ -112,7 +111,6 @@ function ProductDetails() {
     <div>
       <Navbar />
 
-      {/* Notification Message */}
       {message && (
         <div
           className={`fixed top-20 left-1/2 transform -translate-x-1/2 ${
@@ -157,12 +155,11 @@ function ProductDetails() {
                         key={size}
                         onClick={() => setSelectedSize(size)}
                         className={`py-3 px-5 rounded-lg font-semibold border-2 transition duration-200 
-                                                            ${
-                                                              selectedSize ===
-                                                              size
-                                                                ? "bg-black text-white border-black shadow-lg"
-                                                                : "bg-white text-gray-800 border-gray-300 hover:border-black"
-                                                            }`}
+                          ${
+                            selectedSize === size
+                              ? "bg-black text-white border-black shadow-lg"
+                              : "bg-white text-gray-800 border-gray-300 hover:border-black"
+                          }`}
                       >
                         {size}
                       </button>
@@ -191,11 +188,11 @@ function ProductDetails() {
                   onClick={handleAddToCart}
                   disabled={!selectedSize}
                   className={`w-full py-4 rounded-xl font-bold text-lg transition duration-300 shadow-md
-                                        ${
-                                          selectedSize
-                                            ? "bg-red-600 text-white hover:bg-red-700"
-                                            : "bg-gray-300 text-gray-600 cursor-not-allowed"
-                                        }`}
+                    ${
+                      selectedSize
+                        ? "bg-red-600 text-white hover:bg-red-700"
+                        : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                    }`}
                 >
                   ADD TO CART
                 </button>
@@ -204,11 +201,11 @@ function ProductDetails() {
                   onClick={handleBuyNow}
                   disabled={!selectedSize}
                   className={`w-full py-4 rounded-xl font-bold text-lg transition duration-300 shadow-md
-                                        ${
-                                          selectedSize
-                                            ? "bg-black text-white hover:bg-gray-800"
-                                            : "bg-gray-300 text-gray-600 cursor-not-allowed"
-                                        }`}
+                    ${
+                      selectedSize
+                        ? "bg-black text-white hover:bg-gray-800"
+                        : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                    }`}
                 >
                   BUY NOW
                 </button>

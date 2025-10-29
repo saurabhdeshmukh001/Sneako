@@ -16,7 +16,7 @@ const dataDir = path.join(__dirname, 'data');
 const dbMap = {};
 fs.readdirSync(dataDir).forEach(file => {
   if (file.endsWith('.json')) {
-    const resourceName = file.replace('.json', ''); // e.g., 'customer', 'product'
+    const resourceName = file.replace('.json', ''); 
     const adapter = new FileSync(path.join(dataDir, file));
     dbMap[resourceName] = low(adapter);
   }
@@ -134,17 +134,15 @@ Object.entries(apiHandlers).forEach(([path, handler]) => {
 // Custom middleware to handle POST requests and write to correct file
 // Custom middleware to handle POST, PUT, and DELETE requests
 server.use((req, res, next) => {
-  const resource = req.path.replace(`${API_PREFIX}/`, '').split('/')[0]; // e.g., 'products'
-  if (!dbMap[resource]) return next(); // Skip if resource doesn't exist
+  const resource = req.path.replace(`${API_PREFIX}/`, '').split('/')[0]; 
+  if (!dbMap[resource]) return next(); 
 
   if (req.method === 'POST') {
     const data = req.body;
-    // Ensure the data has an 'id' (string, per createId)
     if (!data.id) {
       data.id = String(dbMap[resource].get(resource).value().length + 1);
     }
     try {
-      // Persist to the correct JSON file
       dbMap[resource].get(resource).push(data).write();
       // Update in-memory db for router consistency
       db[resource] = dbMap[resource].get(resource).value();
@@ -153,7 +151,7 @@ server.use((req, res, next) => {
       return res.status(500).jsonp({ error: 'Failed to save data' });
     }
   } else if (req.method === 'PUT') {
-    const id = req.path.split('/').pop(); // e.g., '/api/v1/products/1' -> '1'
+    const id = req.path.split('/').pop(); 
     const data = req.body;
     try {
       // Update the resource in the correct JSON file
@@ -225,11 +223,10 @@ if (index === -1) {
 // Get existing user
 const existingUser = usersData.get(index).value();
 
-// Merge only updated fields, keep address and role intact
 const newUserData = {
-  ...existingUser,   // preserve all existing fields
-  ...updatedUser,    // overwrite only fields sent in req.body
-  id                 // ensure id stays the same
+  ...existingUser,   
+  ...updatedUser,    
+  id                 
 };
 
 // Replace user in array

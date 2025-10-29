@@ -41,41 +41,59 @@ function OrderTracking() {
 
     // order fetch 
     useEffect(() => {
-        const fetchOrderAndProducts = async () => {
-            try {
-                const orderResponse = await axios.get(`http://localhost:3000/api/v1/orders/${orderId}`);
-                const fetchedOrder = orderResponse.data;
-                const productIds = fetchedOrder.products.map(item => item.productId);
-                const productRequests = productIds.map(id => 
-                    axios.get(`http://localhost:3000/api/v1/products/${id}`)
-                );
+    const fetchOrder = async () => {
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            const token = user?.jwt;
 
-                const productResponses = await Promise.all(productRequests);
-                const productsData = productResponses.map(res => res.data);
+            const res = await axios.get(`http://localhost:8085/api/v1/orders/${orderId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
-                const mergedProducts = fetchedOrder.products.map(item => {
-                    const productDetail = productsData.find(p => p.id === item.productId);
-                    return {
-                        ...item,
-                        image: productDetail ? productDetail.image : null,
-                    };
-                });
-                setOrder({
-                    ...fetchedOrder,
-                    products: mergedProducts
-                });  
-                setLoading(false);
-            } catch (err) {
-                console.error("Error fetching order/product details:", err);
-                setError('Order not found or an error occurred. Ensure your JSON server is running and the product IDs are correct.');
-                setLoading(false);
-            }
-        };
+            const fetchedOrder = res.data;
 
-        if (orderId) {
-            fetchOrderAndProducts();
+            // Optional: enrich with product images if needed
+            const productRequests = fetchedOrder.orderItems.map(item =>
+                axios.get(`http://localhost:8085/api/v1/products/${item.productId}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                })
+            );
+
+            const productResponses = await Promise.all(productRequests);
+            const productsData = productResponses.map(res => res.data);
+
+            const mergedItems = fetchedOrder.orderItems.map(item => {
+                const productDetail = productsData.find(p => p.productID === item.productId);
+                return {
+                    ...item,
+                    name: productDetail?.productName || `Product ${item.productId}`,
+                    image: productDetail?.imageUrl || null,
+                    price: item.unitPrice
+                };
+            });
+
+            setOrder({
+                ...fetchedOrder,
+                products: mergedItems,
+                status: fetchedOrder.orderStatus,
+                trackingNumber: `TRACK-${fetchedOrder.orderId}`
+            });
+
+        } catch (err) {
+            console.error("Error fetching order:", err);
+            setError('Order not found or an error occurred. Please try again.');
+        } finally {
+            setLoading(false);
         }
-    }, [orderId]);
+    };
+
+    if (orderId) {
+        fetchOrder();
+    }
+}, [orderId]);
+
 
     if (loading) {
         return (

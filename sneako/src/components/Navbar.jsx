@@ -19,9 +19,9 @@ function Navbar() {
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
+    console.log("Navbar - storedUser:", storedUser);
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
-      console.log("Loaded user from localStorage:", parsedUser);
       setUser(parsedUser);
     } else {
       setUser(null);
@@ -29,28 +29,41 @@ function Navbar() {
   }, [location]);
 
   useEffect(() => {
+    const token = user?.jwt;
+    if (!token) return;
+
     async function fetchProducts() {
       try {
         const response = await axios.get(
-          "http://localhost:3000/api/v1/products"
+          "http://localhost:8085/api/v1/products",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
-        setProducts(response.data);
-        setFilteredProducts(response.data);
+        setProducts(response.data.content || []);
+        setFilteredProducts(response.data.content || []);
       } catch (error) {
         console.error("Failed to fetch products:", error);
+        if (error.response?.status === 401) {
+          navigate("/login");
+        }
       }
     }
+
     fetchProducts();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     function handleSearch(event) {
       const query = event.detail.toLowerCase();
       const filtered = products.filter((product) =>
-        product.name.toLowerCase().includes(query)
+        product.productName.toLowerCase().includes(query)
       );
       setFilteredProducts(filtered);
     }
+
     window.addEventListener("searchProduct", handleSearch);
     return () => window.removeEventListener("searchProduct", handleSearch);
   }, [products]);
@@ -105,7 +118,7 @@ function Navbar() {
       </div>
       {/* Desktop Nav */}
       <div className="hidden md:flex flex-1 items-center justify-end space-x-8">
-        {user && (user.role === "admin" || user.role === "seller") && (
+        {user && (user.role === "ROLE_ADMIN" || user.role === "seller") && (
           <>
             <Link to="/admin">
               <h1 className="font-bold">Admin Dashboard</h1>
@@ -117,11 +130,11 @@ function Navbar() {
                   to="/profile"
                   className="block px-3 py-2 rounded hover:bg-gray-700"
                 >
-                  <p className="font-semibold">{user.name}</p>
+                  <p className="font-semibold">{user.userId}</p>
                 </Link>
                 <button
                   onClick={() => {
-                    localStorage.removeItem("user");
+                    localStorage.clear();
                     navigate("/");
                   }}
                   className="w-full text-left px-3 py-2 rounded hover:bg-red-600"
@@ -132,7 +145,7 @@ function Navbar() {
             </div>
           </>
         )}
-        {user && (user.role === "customer" || !user.role) && (
+        {user && (user.role === "ROLE_CUSTOMER" || !user.role) && (
           <>
             <form
               onSubmit={handleSearchSubmit}
@@ -218,7 +231,7 @@ function Navbar() {
                   to="/profile"
                   className="block px-3 py-2 rounded hover:bg-gray-700"
                 >
-                  <p className="font-semibold">{user.name}</p>
+                  <p className="font-semibold">{user.userId}</p>
                 </Link>
                 <button
                   onClick={() => {
@@ -237,7 +250,7 @@ function Navbar() {
       {/* Mobile Nav */}
       {mobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-black bg-opacity-95 flex flex-col items-start px-4 py-4 space-y-4 z-30">
-          {user && (user.role === "admin" || user.role === "seller") && (
+          {user && (user.role === "ROLE_ADMIN" || user.role === "seller") && (
             <>
               <Link
                 to="/admin"
@@ -251,7 +264,7 @@ function Navbar() {
                 className="w-full"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <p className="font-semibold">{user.name}</p>
+                <p className="font-semibold">{user.userId}</p>
               </Link>
               <button
                 onClick={() => {
@@ -265,7 +278,7 @@ function Navbar() {
               </button>
             </>
           )}
-          {user && (user.role === "customer" || !user.role) && (
+          {user && (user.role === "ROLE_CUSTOMER" || !user.role) && (
             <>
               <form
                 onSubmit={(e) => {
@@ -319,7 +332,9 @@ function Navbar() {
                   <button
                     onClick={() => {
                       window.dispatchEvent(
-                        new CustomEvent("categorySelected", { detail: "Running Shoes" })
+                        new CustomEvent("categorySelected", {
+                          detail: "Running Shoes",
+                        })
                       );
                       setMobileMenuOpen(false);
                     }}
@@ -330,7 +345,9 @@ function Navbar() {
                   <button
                     onClick={() => {
                       window.dispatchEvent(
-                        new CustomEvent("categorySelected", { detail: "Casual Shoes" })
+                        new CustomEvent("categorySelected", {
+                          detail: "Casual Shoes",
+                        })
                       );
                       setMobileMenuOpen(false);
                     }}
@@ -341,7 +358,9 @@ function Navbar() {
                   <button
                     onClick={() => {
                       window.dispatchEvent(
-                        new CustomEvent("categorySelected", { detail: "Skate Shoes" })
+                        new CustomEvent("categorySelected", {
+                          detail: "Skate Shoes",
+                        })
                       );
                       setMobileMenuOpen(false);
                     }}
@@ -356,7 +375,7 @@ function Navbar() {
                 className="w-full"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                <p className="font-semibold">{user.name}</p>
+                <p className="font-semibold">{user.userId}</p>
               </Link>
               <button
                 onClick={() => {

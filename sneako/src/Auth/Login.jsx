@@ -5,11 +5,10 @@ import Footer from "../components/Footer";
 import axios from "axios";
 
 function Login() {
-  const [role, setRole] = useState("customer");
+  const [selectedRole, setSelectedRole] = useState("ROLE_CUSTOMER");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -17,49 +16,60 @@ function Login() {
     setError("");
 
     try {
-      // Use axios and send name and password
       const response = await axios.post(
-        "http://localhost:3000/api/v1/auth/login",
+        "http://localhost:8085/api/v1/userservice/login",
         {
-          name: name,
+          username: name,
           password: password,
+          role: selectedRole
         }
       );
+
       const data = response.data;
+      console.log(data, "login response data");
+
       if (data.jwt) {
-        if (data.role !== role) {
-          setError("Role mismatch.");
+        localStorage.setItem("user", JSON.stringify({
+          jwt: data.jwt,
+          id: data.id,
+          userId: data.userName,
+          role: data.role,
+          address: data.address,
+          email: data.email,
+          phone: data.phone,
+          appInstance: data.appInstance
+        }));
+
+        const backendRole = data.role?.toUpperCase();
+        console.log(backendRole);
+
+        const selected = selectedRole?.toUpperCase();
+        console.log(selected);
+
+        if (backendRole !== selected) {
+          setError("Selected role does not match your account role.");
           return;
         }
-        localStorage.setItem("user", JSON.stringify(data));
-        setSuccess(true);
-        setTimeout(() => {
-          setSuccess(false);
-          if (role === "customer") {
-            navigate("/home");
-          } else if (role === "seller") {
-            navigate("/admin");
-          }
-        }, 1500);
+
+        if (backendRole === "ROLE_ADMIN") {
+          console.log("navigating to the admin")
+          navigate("/admin");
+        } else {
+          navigate("/home");
+        }
       } else {
         setError(data.message || "Invalid credentials. Please try again.");
       }
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          "An error occurred. Please try again later."
+        "An error occurred. Please try again later."
       );
     }
   };
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
-      {success && (
-        <div className="fixed top-8 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 text-lg font-semibold">
-          Login Successfull!
-        </div>
-      )}  
-
       <video
         autoPlay
         loop
@@ -73,7 +83,7 @@ function Login() {
 
       <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
 
-      <Navbar></Navbar>
+      <Navbar />
 
       <div className="relative flex items-center justify-center h-screen z-10">
         <div className="bg-black/40 backdrop-blur-md shadow-2xl rounded-2xl p-8 w-full max-w-sm text-white">
@@ -84,22 +94,20 @@ function Login() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Static Role Dropdown */}
             <div>
               <label className="block mb-2 font-medium">Select Role</label>
               <select
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
+                value={selectedRole}
+                onChange={(e) => setSelectedRole(e.target.value)}
                 className="w-full border border-gray-600 bg-transparent rounded-lg px-3 py-2 focus:ring-2 focus:ring-red-500 focus:outline-none"
               >
-                <option value="customer" className="text-black">
-                  Customer
-                </option>
-                <option value="seller" className="text-black">
-                  Seller
-                </option>
+                <option value="ROLE_CUSTOMER" className="text-black">Customer</option>
+                <option value="ROLE_ADMIN" className="text-black">Admin</option>
               </select>
             </div>
 
+            {/* Name */}
             <div>
               <label className="block mb-2 font-medium">Name</label>
               <input
@@ -112,8 +120,9 @@ function Login() {
               />
             </div>
 
+            {/* Password */}
             <div>
-              <label className="block mb-2 font-medium">PASSWORD</label>
+              <label className="block mb-2 font-medium">Password</label>
               <input
                 type="password"
                 value={password}
@@ -124,6 +133,7 @@ function Login() {
               />
             </div>
 
+            {/* Submit */}
             <button
               type="submit"
               className="w-full bg-red-600 text-white font-semibold py-2 rounded-lg hover:bg-red-700 transition"
@@ -132,7 +142,7 @@ function Login() {
             </button>
           </form>
 
-          {role === "customer" && (
+          
             <p className="text-center text-gray-300 mt-6">
               Don’t have an account?{" "}
               <span
@@ -142,10 +152,11 @@ function Login() {
                 Sign Up
               </span>
             </p>
-          )}
+          
         </div>
       </div>
-      <Footer></Footer>
+
+      <Footer />
     </div>
   );
 }
